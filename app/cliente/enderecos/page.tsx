@@ -1,8 +1,12 @@
+﻿
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import { PageState } from "@/components/ui/PageState";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
 
 type Address = {
@@ -16,323 +20,329 @@ type Address = {
   neighborhood: string;
   city: string;
   state: string;
-  country: string;
   is_default: boolean;
 };
 
-export default function EnderecosPage() {
+export default function ClienteEnderecosPage() {
   const router = useRouter();
+  const supabase = createSupabaseBrowserClient();
 
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
+  const [updating, setUpdating] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    let active = true;
-
-    async function loadAddresses() {
-      const supabase = createSupabaseBrowserClient();
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        router.replace("/login");
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("addresses")
-        .select(
-          "id, label, recipient_name, postal_code, street, number, complement, neighborhood, city, state, country, is_default"
-        )
-        .eq("profile_id", user.id)
-        .order("is_default", { ascending: false })
-        .order("created_at", { ascending: false });
-
-      if (!active) {
-        return;
-      }
-
-      if (error) {
-        setMessage("Não foi possível carregar seus endereços.");
-        setLoading(false);
-        return;
-      }
-
-      setAddresses(data || []);
-      setLoading(false);
-    }
-
-    void Promise.resolve().then(loadAddresses);
-
-    return () => {
-      active = false;
-    };
-  }, [router]);
-
-  async function handleSetDefault(addressId: string) {
-    setMessage("");
-    setSaving(true);
-
-    const supabase = createSupabaseBrowserClient();
+  const loadAddresses = useCallback(async () => {
+    setLoading(true);
+    setError("");
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (!user) {
-      router.replace("/login");
+      router.replace("/login?redirect=/cliente/enderecos");
       return;
     }
 
-    const { error: resetError } = await supabase
+    const { data, error: addressesError } = await supabase
       .from("addresses")
-      .update({ is_default: false })
+      .select(
+        "id, label, recipient_name, postal_code, street, number, complement, neighborhood, city, state, is_default",
+      )
       .eq("profile_id", user.id)
-      .eq("is_default", true);
+      .order("is_default", { ascending: false })
+      .order("created_at", { ascending: false });
 
-    if (resetError) {
-      setMessage("Não foi possível alterar o endereço principal.");
-      setSaving(false);
+    if (addressesError) {
+      setError("Não foi possível carregar seus endereços.");
+      setLoading(false);
       return;
     }
 
-    const { error: defaultError } = await supabase
+    setAddresses(data ?? []);
+    setLoading(false);
+  }, [router, supabase]);
+
+  useEffect(() => {
+    void Promise.resolve().then(loadAddresses);
+  }, [loadAddresses]);
+
+  async function handleSetDefault(addressId: string) {
+    setError("");
+    setUpdating(addressId);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      router.replace("/login?redirect=/cliente/enderecos");
+      return;
+    }
+
+    // Marque o destino antes de limpar os demais: se a primeira escrita falhar,
+    // o endereço principal atual continua intacto.
+    const { data: selectedAddress, error: updateError } = await supabase
       .from("addresses")
       .update({ is_default: true })
       .eq("id", addressId)
-      .eq("profile_id", user.id);
+      .eq("profile_id", user.id)
+      .select("id")
+      .maybeSingle();
 
-    if (defaultError) {
-      setMessage("Não foi possível definir o endereço principal.");
-      setSaving(false);
+    if (updateError || !selectedAddress) {
+      setError("Não foi possível definir o endereço principal.");
+      setUpdating(null);
       return;
     }
 
-    setAddresses((current) =>
-      current.map((address) => ({
-        ...address,
-        is_default: address.id === addressId,
-      }))
-    );
+    const { error: clearError } = await supabase
+      .from("addresses")
+      .update({ is_default: false })
+      .eq("profile_id", user.id)
+      .neq("id", addressId);
 
-    setMessage("Endereço principal atualizado.");
-    setSaving(false);
+    if (clearError) {
+      await loadAddresses();
+      setError(
+        "O endereço escolhido foi definido como principal, mas não foi possível atualizar os demais. Confira a lista e tente novamente.",
+      );
+      setUpdating(null);
+      return;
+    }
+
+    await loadAddresses();
+    setUpdating(null);
   }
 
-  async function handleDelete(addressId: string) {
-    setMessage("");
-
-    const address = addresses.find((item) => item.id === addressId);
-
-    if (!address) {
-      return;
-    }
-
-    if (address.is_default) {
-      setMessage(
-        "Defina outro endereço como principal antes de excluir este."
+  async function handleDelete(address: Address) {
+    if (address.is_default && addresses.length > 1) {
+      setError(
+        "Defina outro endereço como principal antes de excluir este.",
       );
       return;
     }
 
     const confirmed = window.confirm(
-      "Deseja realmente excluir este endereço?"
+      `Deseja excluir o endereço "${address.label}"?`,
     );
 
     if (!confirmed) {
       return;
     }
 
-    setSaving(true);
-
-    const supabase = createSupabaseBrowserClient();
+    setError("");
+    setDeleting(address.id);
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (!user) {
-      router.replace("/login");
+      router.replace("/login?redirect=/cliente/enderecos");
       return;
     }
 
-    const { error } = await supabase
+    const { error: deleteError } = await supabase
       .from("addresses")
       .delete()
-      .eq("id", addressId)
+      .eq("id", address.id)
       .eq("profile_id", user.id);
 
-    if (error) {
-      setMessage("Não foi possível excluir o endereço.");
-      setSaving(false);
+    if (deleteError) {
+      setError("Não foi possível excluir este endereço.");
+      setDeleting(null);
       return;
     }
 
-    setAddresses((current) =>
-      current.filter((item) => item.id !== addressId)
-    );
-
-    setMessage("Endereço excluído.");
-    setSaving(false);
+    await loadAddresses();
+    setDeleting(null);
   }
 
-  if (loading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-zinc-50">
-        <p className="text-sm text-zinc-500">Carregando endereços...</p>
-      </main>
-    );
+  function formatAddress(address: Address) {
+    const firstLine = `${address.street}, ${address.number}`;
+
+    const secondLine = [
+      address.complement,
+      address.neighborhood,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+
+    const thirdLine = `${address.city} - ${address.state}`;
+
+    return {
+      firstLine,
+      secondLine,
+      thirdLine,
+    };
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50">
-      <header className="border-b border-zinc-200 bg-black">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <button
-            type="button"
-            onClick={() => router.push("/cliente")}
-            className="flex items-center"
-          >
-            <Image
-              src="/logo-vemgo.png"
-              alt="VemGO"
-              width={150}
-              height={55}
-              priority
-              className="h-auto w-[150px] object-contain"
-            />
-          </button>
+    <main className="min-h-screen bg-black text-white">
+      <div className="mx-auto max-w-4xl px-6 pt-6">
+        <button
+          type="button"
+          onClick={() => router.push("/cliente")}
+          className="inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-green-400 transition hover:text-green-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+        >
+          <span aria-hidden="true">←</span>
+          <span>Voltar para minha área</span>
+        </button>
+      </div>
 
-          <button
-            type="button"
-            onClick={() => router.push("/cliente")}
-            className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100"
-          >
-            Voltar
-          </button>
-        </div>
-      </header>
-
-      <section className="mx-auto max-w-5xl px-6 py-10">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <section className="mx-auto max-w-4xl px-6 py-8 sm:py-10">
+        <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-3xl font-bold text-zinc-900">
-              Meus endereços
-            </h2>
+            <span className="inline-flex rounded-full border border-green-500/30 bg-green-500/10 px-4 py-2 text-xs font-semibold tracking-wide text-green-400">
+  Cliente
+</span>
 
-            <p className="mt-2 text-zinc-600">
-              Cadastre e gerencie os locais onde você solicita serviços.
+            <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Meus endereços
+            </h1>
+
+            <p className="mt-2 text-zinc-500">
+              Gerencie os locais onde você costuma solicitar
+              atendimentos.
             </p>
           </div>
 
           <button
             type="button"
             onClick={() => router.push("/cliente/enderecos/novo")}
-            className="rounded-xl bg-emerald-700 px-5 py-3 font-semibold text-white hover:bg-emerald-800"
+            className="rounded-xl bg-green-500 px-6 py-3 font-semibold text-black transition hover:bg-green-400"
           >
             + Novo endereço
           </button>
         </div>
 
-        {message && (
-          <div className="mt-6 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-            {message}
+        {error && (
+          <div
+            role="alert"
+            className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400"
+          >
+            {error}
           </div>
         )}
 
-        {addresses.length === 0 ? (
-          <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-8 text-center shadow-sm">
-            <h3 className="text-lg font-semibold text-zinc-900">
-              Nenhum endereço cadastrado
-            </h3>
-
-            <p className="mt-2 text-sm text-zinc-500">
-              Cadastre seu primeiro endereço para solicitar serviços pela
-              VemGO.
-            </p>
-
-            <button
-              type="button"
-              onClick={() => router.push("/cliente/enderecos/novo")}
-              className="mt-6 rounded-xl bg-emerald-700 px-5 py-3 font-semibold text-white hover:bg-emerald-800"
-            >
-              Cadastrar endereço
-            </button>
-          </div>
+        {loading ? (
+          <PageState kind="loading" tone="client" title="Carregando endereços..." />
+        ) : addresses.length === 0 ? (
+          <PageState
+            kind="empty"
+            tone="client"
+            title="Nenhum endereço cadastrado"
+            description="Cadastre seu primeiro endereço para poder solicitar serviços na VemGO."
+            action={{ label: "Cadastrar endereço", href: "/cliente/enderecos/novo" }}
+          />
         ) : (
-          <div className="mt-8 space-y-4">
-            {addresses.map((address) => (
-              <div
-                key={address.id}
-                className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
-              >
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-lg font-semibold text-zinc-900">
-                        {address.label}
-                      </h3>
+          <div className="space-y-4">
+            {addresses.map((address) => {
+              const formatted = formatAddress(address);
 
-                      {address.is_default && (
-                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-                          Principal
-                        </span>
-                      )}
+              return (
+                <Card
+                  key={address.id}
+                  padding="lg"
+                  className={
+                    address.is_default
+                      ? "border-green-500/30"
+                      : ""
+                  }
+                >
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="flex min-w-0 gap-4">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-green-500/30 bg-green-500/10 text-xl text-green-400">
+                        📍
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h2 className="font-bold text-white">
+                            {address.label}
+                          </h2>
+
+                          {address.is_default && (
+                            <span className="inline-flex rounded-full border border-green-500/40 bg-green-500/10 px-3 py-1 text-xs font-semibold text-green-400">
+                              Principal
+                            </span>
+                          )}
+                        </div>
+
+                        {address.recipient_name && (
+                          <p className="mt-2 text-sm text-zinc-400">
+                            {address.recipient_name}
+                          </p>
+                        )}
+
+                        <p className="mt-2 text-sm text-zinc-300">
+                          {formatted.firstLine}
+                        </p>
+
+                        {formatted.secondLine && (
+                          <p className="mt-1 text-sm text-zinc-500">
+                            {formatted.secondLine}
+                          </p>
+                        )}
+
+                        <p className="mt-1 text-sm text-zinc-500">
+                          {formatted.thirdLine}
+                        </p>
+
+                        {address.postal_code && (
+                          <p className="mt-2 text-xs text-zinc-700">
+                            CEP {address.postal_code}
+                          </p>
+                        )}
+                      </div>
                     </div>
 
-                    {address.recipient_name && (
-                      <p className="mt-2 text-sm text-zinc-600">
-                        {address.recipient_name}
-                      </p>
-                    )}
+                    <div className="flex shrink-0 flex-wrap gap-2 sm:justify-end">
+                      {!address.is_default && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled={updating === address.id}
+                          onClick={() =>
+                            handleSetDefault(address.id)
+                          }
+                        >
+                          {updating === address.id
+                            ? "Atualizando..."
+                            : "Definir principal"}
+                        </Button>
+                      )}
 
-                    <p className="mt-2 text-zinc-800">
-                      {address.street}, {address.number}
-                      {address.complement
-                        ? ` — ${address.complement}`
-                        : ""}
-                    </p>
-
-                    <p className="mt-1 text-sm text-zinc-600">
-                      {address.neighborhood} — {address.city}/
-                      {address.state}
-                    </p>
-
-                    {address.postal_code && (
-                      <p className="mt-1 text-sm text-zinc-500">
-                        CEP: {address.postal_code}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {!address.is_default && (
-                      <button
+                      <Button
                         type="button"
-                        onClick={() => handleSetDefault(address.id)}
-                        disabled={saving}
-                        className="rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 disabled:opacity-50"
+                        variant="outline"
+                        onClick={() =>
+                          router.push(
+                            `/cliente/enderecos/novo?id=${address.id}`,
+                          )
+                        }
                       >
-                        Tornar principal
-                      </button>
-                    )}
+                        Editar
+                      </Button>
 
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(address.id)}
-                      disabled={saving}
-                      className="rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:opacity-50"
-                    >
-                      Excluir
-                    </button>
+                      <Button
+                        type="button"
+                        variant="danger"
+                        disabled={deleting === address.id}
+                        onClick={() => handleDelete(address)}
+                      >
+                        {deleting === address.id
+                          ? "Excluindo..."
+                          : "Excluir"}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </Card>
+              );
+            })}
           </div>
         )}
       </section>

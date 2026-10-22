@@ -1,41 +1,27 @@
 ﻿"use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
+import { getProfessionalOnboardingRoute } from "@/lib/professional-onboarding";
 
+type LoginMode = "client" | "professional";
 
-const onboardingRoutes: Record<number, string> = {
-  1: "/cadastro-profissional",
-  2: "/cadastro-profissional/endereco",
-  3: "/cadastro-profissional/foto",
-  4: "/cadastro-profissional/identidade",
-  5: "/cadastro-profissional/competencias",
-  6: "/cadastro-profissional/precos",
-  7: "/cadastro-profissional/disponibilidade",
-  8: "/cadastro-profissional/area-atendimento",
-  9: "/cadastro-profissional/plano",
-};
-
-function getNextOnboardingRoute(step: number | null | undefined) {
-  if (!step || step < 1) {
-    return "/cadastro-profissional";
-  }
-
-  if (step >= 10) {
-    return "/profissional";
-  }
-
-  return onboardingRoutes[step] ?? "/profissional";
-}
-
-function LoginPageContent() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const supabase = createSupabaseBrowserClient();
 
-  const [mode, setMode] = useState<"client" | "professional">(() => searchParams.get("role") === "professional" ? "professional" : "client");
+  const [mode, setMode] = useState<LoginMode>(() =>
+    searchParams.get("role") === "professional"
+      ? "professional"
+      : "client",
+  );
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,32 +29,40 @@ function LoginPageContent() {
 
   const isProfessional = mode === "professional";
 
-
   async function resolveProfessionalDestination(userId: string) {
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("professional_onboarding_step")
-      .eq("id", userId)
-      .single();
+    const { data: profile, error: profileError } =
+      await supabase
+        .from("profiles")
+        .select("professional_onboarding_step")
+        .eq("id", userId)
+        .single();
 
     if (profileError || !profile) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar o andamento do seu cadastro profissional.",
+        "Não foi possível verificar o andamento do seu cadastro profissional.",
       );
     }
 
-    const storedStep = Number(profile.professional_onboarding_step ?? 1);
+    const storedStep = Number(
+      profile.professional_onboarding_step ?? 1,
+    );
 
-    const { data: address, error: addressError } = await supabase
-      .from("addresses")
-      .select("id")
-      .eq("profile_id", userId)
-      .limit(1)
-      .maybeSingle();
+    if (storedStep >= 10) {
+      return "/profissional";
+    }
+
+    const { data: address, error: addressError } =
+      await supabase
+        .from("addresses")
+        .select("id")
+        .eq("profile_id", userId)
+        .eq("is_default", true)
+        .limit(1)
+        .maybeSingle();
 
     if (addressError) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar seu endereÃ§o profissional.",
+        "Não foi possível verificar seu endereço profissional.",
       );
     }
 
@@ -85,15 +79,16 @@ function LoginPageContent() {
       return "/cadastro-profissional/endereco";
     }
 
-    const { data: profilePhoto, error: photoError } = await supabase
-      .from("profiles")
-      .select("avatar_url")
-      .eq("id", userId)
-      .single();
+    const { data: profilePhoto, error: photoError } =
+      await supabase
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", userId)
+        .single();
 
     if (photoError) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar sua foto de perfil.",
+        "Não foi possível verificar sua foto de perfil.",
       );
     }
 
@@ -114,7 +109,7 @@ function LoginPageContent() {
     } = await supabase
       .from("identity_verifications")
       .select("id, status")
-      .eq("user_id", userId)
+      .eq("profile_id", userId)
       .order("created_at", {
         ascending: false,
       })
@@ -123,7 +118,7 @@ function LoginPageContent() {
 
     if (identityError) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar sua identidade.",
+        "Não foi possível verificar sua identidade.",
       );
     }
 
@@ -148,22 +143,23 @@ function LoginPageContent() {
     }
 
     const {
-      data: professionalServices,
+      data: professionalService,
       error: servicesError,
     } = await supabase
       .from("professional_services")
-      .select("id")
+      .select("service_id")
       .eq("professional_id", userId)
+      .eq("is_active", true)
       .limit(1)
       .maybeSingle();
 
     if (servicesError) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar suas competÃªncias.",
+        "Não foi possível verificar suas competências.",
       );
     }
 
-    if (!professionalServices) {
+    if (!professionalService) {
       await supabase
         .from("profiles")
         .update({
@@ -181,12 +177,13 @@ function LoginPageContent() {
       .from("service_prices")
       .select("id")
       .eq("professional_id", userId)
+      .eq("is_active", true)
       .limit(1)
       .maybeSingle();
 
     if (priceError) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar seus preÃ§os.",
+        "Não foi possível verificar seus preços.",
       );
     }
 
@@ -208,12 +205,13 @@ function LoginPageContent() {
       .from("professional_availability")
       .select("id")
       .eq("professional_id", userId)
+      .eq("is_active", true)
       .limit(1)
       .maybeSingle();
 
     if (availabilityError) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar sua disponibilidade.",
+        "Não foi possível verificar sua disponibilidade.",
       );
     }
 
@@ -241,7 +239,7 @@ function LoginPageContent() {
 
     if (regionError) {
       throw new Error(
-        "NÃ£o foi possÃ­vel verificar sua Ã¡rea de atendimento.",
+        "Não foi possível verificar sua área de atendimento.",
       );
     }
 
@@ -267,7 +265,7 @@ function LoginPageContent() {
       return "/cadastro-profissional/plano";
     }
 
-    return getNextOnboardingRoute(storedStep);
+    return getProfessionalOnboardingRoute(storedStep);
   }
 
   async function handleLogin(
@@ -278,138 +276,126 @@ function LoginPageContent() {
     setError("");
     setLoading(true);
 
-    const { data, error: loginError } =
-      await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
+    try {
+      const { data, error: loginError } =
+        await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
 
-    if (loginError || !data.user) {
-      setError("E-mail ou senha invÃ¡lidos.");
-      setLoading(false);
-      return;
-    }
-
-    const { data: profile, error: profileError } =
-      await supabase
-        .from("profiles")
-        .select("user_type, status")
-        .eq("id", data.user.id)
-        .single();
-
-    if (profileError || !profile) {
-      await supabase.auth.signOut();
-
-      setError(
-        "NÃ£o foi possÃ­vel carregar o perfil da sua conta.",
-      );
-
-      setLoading(false);
-      return;
-    }
-
-    if (profile.status === "blocked") {
-      await supabase.auth.signOut();
-
-      setError(
-        "Sua conta estÃ¡ bloqueada. Entre em contato com a VemGO.",
-      );
-
-      setLoading(false);
-      return;
-    }
-
-    if (
-      isProfessional &&
-      profile.user_type === "client"
-    ) {
-      await supabase.auth.signOut();
-
-      setError(
-        "Esta Ã© uma conta de cliente. Selecione Cliente para entrar.",
-      );
-
-      setLoading(false);
-      return;
-    }
-
-    if (
-      !isProfessional &&
-      profile.user_type === "professional"
-    ) {
-      await supabase.auth.signOut();
-
-      setError(
-        "Esta Ã© uma conta de profissional. Selecione Profissional para entrar.",
-      );
-
-      setLoading(false);
-      return;
-    }
-
-    if (profile.user_type === "professional") {
-      try {
-        const destination =
-          await resolveProfessionalDestination(
-            data.user.id,
-          );
-
-        router.replace(destination);
-        return;
-      } catch (destinationError) {
-        await supabase.auth.signOut();
-
-        setError(
-          destinationError instanceof Error
-            ? destinationError.message
-            : "NÃ£o foi possÃ­vel verificar seu cadastro profissional.",
-        );
-
-        setLoading(false);
+      if (loginError || !data.user) {
+        setError("E-mail ou senha inválidos.");
         return;
       }
-    }
 
-    if (profile.user_type === "company") {
-      router.replace("/empresa");
-      return;
-    }
+      const { data: profile, error: profileError } =
+        await supabase
+          .from("profiles")
+          .select("user_type, status")
+          .eq("id", data.user.id)
+          .single();
 
-    if (profile.user_type === "admin") {
-      router.replace("/controle");
-      return;
-    }
+      if (profileError || !profile) {
+        await supabase.auth.signOut();
+        setError("Não foi possível carregar o perfil da sua conta.");
+        return;
+      }
 
-    router.replace("/cliente");
+      if (profile.status === "blocked") {
+        await supabase.auth.signOut();
+        setError("Sua conta está bloqueada. Entre em contato com a VemGO.");
+        return;
+      }
+
+      if (isProfessional && profile.user_type === "client") {
+        await supabase.auth.signOut();
+        setError("Esta é uma conta de cliente. Selecione Cliente para entrar.");
+        return;
+      }
+
+      if (!isProfessional && profile.user_type === "professional") {
+        await supabase.auth.signOut();
+        setError("Esta é uma conta de profissional. Selecione Profissional para entrar.");
+        return;
+      }
+
+      if (profile.user_type === "professional") {
+        try {
+          const destination = await resolveProfessionalDestination(data.user.id);
+          router.replace(destination);
+          return;
+        } catch (destinationError) {
+          await supabase.auth.signOut();
+          setError(
+            destinationError instanceof Error
+              ? destinationError.message
+              : "Não foi possível verificar seu cadastro profissional.",
+          );
+          return;
+        }
+      }
+
+      if (profile.user_type === "company") {
+        setError(
+          "Contas empresariais ainda não estão disponíveis nesta versão da VemGO.",
+        );
+        await supabase.auth.signOut();
+        return;
+      }
+
+      if (profile.user_type === "admin") {
+        await supabase.auth.signOut();
+        setError(
+          "Esta é uma conta administrativa. Utilize o acesso exclusivo da equipe VemGO.",
+        );
+        return;
+      }
+
+      router.replace("/cliente");
+    } catch {
+      try {
+        await supabase.auth.signOut();
+      } catch {
+        // The user remains on the login page if session cleanup is unavailable.
+      }
+      setError("Não foi possível concluir o acesso agora. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <main className="min-h-screen bg-black px-6 py-10 text-white">
+    <main className="relative isolate min-h-screen overflow-hidden bg-[#05070b] px-6 py-10 text-white">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute left-1/2 top-[-14rem] h-[30rem] w-[42rem] -translate-x-1/2 rounded-full bg-emerald-600/10 blur-[120px]" />
+        <div className="absolute bottom-[-16rem] right-[-8rem] h-[28rem] w-[28rem] rounded-full bg-orange-500/10 blur-[110px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.04),transparent_58%)]" />
+      </div>
       <div className="mx-auto flex min-h-[85vh] max-w-md flex-col justify-center">
         <div className="mb-8 text-center">
           <Image
-            src="/logo-vemgo.png"
+            src="/logo-vemgo-transparente.png"
             alt="VemGO"
-            width={360}
-            height={200}
+            width={1751}
+            height={465}
             className="mx-auto h-auto w-[190px] object-contain"
             priority
           />
 
-          <h1 className="mt-6 text-3xl font-bold">
+          <h1 className="mt-5 text-3xl font-bold tracking-tight sm:text-[2.1rem]">
             {isProfessional
-              ? "Ãrea do profissional"
+              ? "Área do profissional"
               : "Entrar"}
           </h1>
 
-          <p className="mt-2 text-zinc-400">
+          <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-zinc-400">
             {isProfessional
               ? "Acesse sua conta profissional VemGO."
               : "Acesse sua conta VemGO."}
           </p>
         </div>
 
-        <div className="mb-5 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-1.5">
+        <div className="mb-5 rounded-2xl border border-white/10 bg-[#0b0f17]/80 p-1.5 shadow-lg shadow-black/20">
           <p className="mb-2 px-3 pt-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
             Entrar como
           </p>
@@ -425,7 +411,8 @@ function LoginPageContent() {
                 !isProfessional
                   ? "bg-emerald-600 text-black shadow-lg"
                   : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
-              }`}
+              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400`}
+              aria-pressed={!isProfessional}
             >
               Cliente
             </button>
@@ -440,7 +427,8 @@ function LoginPageContent() {
                 isProfessional
                   ? "bg-orange-500 text-black shadow-lg"
                   : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
-              }`}
+              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400`}
+              aria-pressed={isProfessional}
             >
               Profissional
             </button>
@@ -449,16 +437,16 @@ function LoginPageContent() {
 
         <form
           onSubmit={handleLogin}
-          className={`rounded-2xl border bg-zinc-900/40 p-6 ${
+          className={`rounded-3xl border bg-[#0b0f17]/90 p-6 shadow-[0_24px_90px_rgba(0,0,0,0.55)] ring-1 backdrop-blur-xl sm:p-7 ${
             isProfessional
-              ? "border-orange-500/30"
-              : "border-emerald-500/20"
+              ? "border-orange-400/20 ring-orange-500/10"
+              : "border-emerald-400/20 ring-emerald-500/10"
           }`}
         >
           <div>
             <label
               htmlFor="email"
-              className="text-sm font-medium text-zinc-200"
+              className="text-sm font-semibold text-zinc-200"
             >
               E-mail
             </label>
@@ -474,14 +462,11 @@ function LoginPageContent() {
                 setEmail(event.target.value)
               }
               required
-              style={{
-                outline: "none",
-                boxShadow: "none",
-              }}
-              className={`mt-2 w-full appearance-none rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-white shadow-none transition !outline-none !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none focus-visible:!outline-none focus-visible:!ring-0 ${
+              aria-invalid={Boolean(error)}
+              className={`mt-2 w-full appearance-none rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-white placeholder:text-zinc-600 outline-none transition focus:ring-4 ${
                 isProfessional
-                  ? "focus:border-orange-500 focus-visible:border-orange-500"
-                  : "focus:border-emerald-500 focus-visible:border-emerald-500"
+                  ? "focus:border-orange-400/80 focus:ring-orange-500/10"
+                  : "focus:border-emerald-400/80 focus:ring-emerald-500/10"
               }`}
             />
           </div>
@@ -489,7 +474,7 @@ function LoginPageContent() {
           <div className="mt-5">
             <label
               htmlFor="password"
-              className="text-sm font-medium text-zinc-200"
+              className="text-sm font-semibold text-zinc-200"
             >
               Senha
             </label>
@@ -504,20 +489,17 @@ function LoginPageContent() {
                 setPassword(event.target.value)
               }
               required
-              style={{
-                outline: "none",
-                boxShadow: "none",
-              }}
-              className={`mt-2 w-full appearance-none rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-white shadow-none transition !outline-none !shadow-none focus:!outline-none focus:!ring-0 focus:!shadow-none focus-visible:!outline-none focus-visible:!ring-0 ${
+              aria-invalid={Boolean(error)}
+              className={`mt-2 w-full appearance-none rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-white placeholder:text-zinc-600 outline-none transition focus:ring-4 ${
                 isProfessional
-                  ? "focus:border-orange-500 focus-visible:border-orange-500"
-                  : "focus:border-emerald-500 focus-visible:border-emerald-500"
+                  ? "focus:border-orange-400/80 focus:ring-orange-500/10"
+                  : "focus:border-emerald-400/80 focus:ring-emerald-500/10"
               }`}
             />
           </div>
 
           {error && (
-            <div className="mt-5 rounded-xl border border-red-900 bg-red-950/40 px-4 py-3 text-sm text-red-300">
+            <div role="alert" className="mt-5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
               {error}
             </div>
           )}
@@ -527,15 +509,15 @@ function LoginPageContent() {
             disabled={loading}
             className={`mt-6 w-full rounded-xl px-5 py-3 font-semibold text-black transition disabled:cursor-not-allowed disabled:opacity-50 ${
               isProfessional
-                ? "bg-orange-500 hover:bg-orange-400"
-                : "bg-emerald-600 hover:bg-emerald-500"
-            }`}
+                ? "bg-orange-400 hover:bg-orange-300 focus-visible:ring-orange-400"
+                : "bg-emerald-400 hover:bg-emerald-300 focus-visible:ring-emerald-400"
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0f17]`}
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>
 
           <div className="mt-4 text-center">
-            <a
+            <Link
               href="/recuperar-senha"
               className={`text-sm font-medium ${
                 isProfessional
@@ -544,12 +526,12 @@ function LoginPageContent() {
               }`}
             >
               Esqueci minha senha
-            </a>
+            </Link>
           </div>
         </form>
 
         <div className="mt-6 text-center text-sm text-zinc-400">
-          <p>Ainda nÃ£o possui conta?</p>
+          <p>Ainda não possui conta?</p>
 
           <button
             type="button"
@@ -560,28 +542,34 @@ function LoginPageContent() {
                   : "/cadastro",
               )
             }
-            className={`mt-2 font-semibold ${
+            className={`mt-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070b] font-semibold ${
               isProfessional
-                ? "text-orange-400 hover:text-orange-300"
-                : "text-emerald-400 hover:text-emerald-300"
+                  ? "text-orange-400 hover:text-orange-300 focus-visible:ring-orange-400"
+                  : "text-emerald-400 hover:text-emerald-300 focus-visible:ring-emerald-400"
             }`}
           >
             {isProfessional
-              ? "Criar conta profissional â†’"
-              : "Criar conta de cliente â†’"}
+              ? "Criar conta profissional →"
+              : "Criar conta de cliente →"}
           </button>
         </div>
       </div>
     </main>
   );
-
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={null}>
-      <LoginPageContent />
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-black text-white">
+          <div className="text-sm text-zinc-400">
+            Carregando...
+          </div>
+        </main>
+      }
+    >
+      <LoginContent />
     </Suspense>
   );
 }
-

@@ -1,82 +1,122 @@
-import type { InputHTMLAttributes } from "react";
+import type {
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+} from "react";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
   hint?: string;
-  fullWidth?: boolean;
-}
+  tone?: "client" | "professional" | "admin";
+};
+
+type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  label?: string;
+  error?: string;
+  hint?: string;
+  tone?: "client" | "professional" | "admin";
+};
+
+const baseClasses =
+  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-white placeholder:text-zinc-500 transition-colors focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50";
+
+const toneClasses = {
+  client: "focus:border-emerald-500 focus:ring-emerald-500",
+  professional: "focus:border-orange-500 focus:ring-orange-500",
+  admin: "focus:border-blue-500 focus:ring-blue-500",
+};
 
 export function Input({
   label,
   error,
   hint,
-  fullWidth = true,
+  tone,
   id,
   className = "",
   ...props
 }: InputProps) {
-  const inputId = id ?? props.name;
-
   return (
-    <div className={fullWidth ? "w-full" : ""}>
+    <div className="w-full">
       {label && (
         <label
-          htmlFor={inputId}
-          className="mb-2 block text-sm font-medium text-text-primary"
+          htmlFor={id}
+          className="mb-2 block text-sm font-semibold text-zinc-200"
         >
           {label}
         </label>
       )}
 
       <input
-        {...props}
-        id={inputId}
-        aria-invalid={Boolean(error)}
-        aria-describedby={
-          error
-            ? `${inputId}-error`
-            : hint
-              ? `${inputId}-hint`
-              : undefined
-        }
+        id={id}
         className={[
-          "min-h-11 rounded-md border bg-surface-2 px-3.5",
-          "text-base text-text-primary",
-          "placeholder:text-text-tertiary",
-          "transition-colors duration-180",
-          "outline-none",
-          "focus:border-vemgo-green",
-          "focus:ring-2 focus:ring-vemgo-green/20",
-          "disabled:cursor-not-allowed disabled:opacity-50",
+          baseClasses,
+          tone ? toneClasses[tone] : "focus:border-[var(--portal-accent)] focus:ring-[var(--portal-accent)]",
           error
-            ? "border-danger focus:border-danger focus:ring-danger/20"
-            : "border-white/10 hover:border-white/20",
-          fullWidth ? "w-full" : "",
+            ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+            : "",
           className,
         ]
           .filter(Boolean)
           .join(" ")}
+        {...props}
       />
 
       {error && (
-        <p
-          id={`${inputId}-error`}
-          className="mt-2 text-sm text-danger"
-          role="alert"
-        >
-          {error}
-        </p>
+        <p className="mt-1.5 text-xs font-medium text-red-400">{error}</p>
       )}
 
       {!error && hint && (
-        <p
-          id={`${inputId}-hint`}
-          className="mt-2 text-xs text-text-tertiary"
-        >
-          {hint}
-        </p>
+        <p className="mt-1.5 text-xs text-zinc-500">{hint}</p>
       )}
     </div>
   );
 }
+
+export function Textarea({
+  label,
+  error,
+  hint,
+  tone,
+  id,
+  className = "",
+  ...props
+}: TextareaProps) {
+  return (
+    <div className="w-full">
+      {label && (
+        <label
+          htmlFor={id}
+          className="mb-2 block text-sm font-semibold text-zinc-200"
+        >
+          {label}
+        </label>
+      )}
+
+      <textarea
+        id={id}
+        className={[
+          baseClasses,
+          tone ? toneClasses[tone] : "focus:border-[var(--portal-accent)] focus:ring-[var(--portal-accent)]",
+          "min-h-32 resize-y",
+          error
+            ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+            : "",
+          className,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        {...props}
+      />
+
+      {error && (
+        <p className="mt-1.5 text-xs font-medium text-red-400">{error}</p>
+      )}
+
+      {!error && hint && (
+        <p className="mt-1.5 text-xs text-zinc-500">{hint}</p>
+      )}
+    </div>
+  );
+}
+
+export default Input;

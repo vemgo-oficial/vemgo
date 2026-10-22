@@ -1,0 +1,138 @@
+﻿> C:\VemGO\vemgo\supabase\schema.sql:641:CREATE OR REPLACE FUNCTION "public"."request_appointment_slot"("p_order_id" "uuid", "p_starts_at" timestamp with time zone, "p_ends_at" timestamp with time zone) RETURNS "public"."appointments"
+  C:\VemGO\vemgo\supabase\schema.sql:642:    LANGUAGE "plpgsql" SECURITY DEFINER
+  C:\VemGO\vemgo\supabase\schema.sql:643:    SET "search_path" TO 'public'
+  C:\VemGO\vemgo\supabase\schema.sql:644:    AS $$
+  C:\VemGO\vemgo\supabase\schema.sql:645:declare
+  C:\VemGO\vemgo\supabase\schema.sql:646:  v_user_id uuid;
+  C:\VemGO\vemgo\supabase\schema.sql:647:  v_order public.orders%rowtype;
+  C:\VemGO\vemgo\supabase\schema.sql:648:  v_professional public.professionals%rowtype;
+  C:\VemGO\vemgo\supabase\schema.sql:649:  v_appointment public.appointments%rowtype;
+  C:\VemGO\vemgo\supabase\schema.sql:650:  v_day_of_week integer;
+  C:\VemGO\vemgo\supabase\schema.sql:651:  v_start_time time;
+  C:\VemGO\vemgo\supabase\schema.sql:652:  v_end_time time;
+  C:\VemGO\vemgo\supabase\schema.sql:653:begin
+  C:\VemGO\vemgo\supabase\schema.sql:654:  v_user_id := auth.uid();
+  C:\VemGO\vemgo\supabase\schema.sql:655:
+  C:\VemGO\vemgo\supabase\schema.sql:656:  if v_user_id is null then
+  C:\VemGO\vemgo\supabase\schema.sql:657:    raise exception 'Usuário não autenticado.';
+  C:\VemGO\vemgo\supabase\schema.sql:658:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:659:
+  C:\VemGO\vemgo\supabase\schema.sql:660:  if p_starts_at >= p_ends_at then
+  C:\VemGO\vemgo\supabase\schema.sql:661:    raise exception 'Horário inválido.';
+  C:\VemGO\vemgo\supabase\schema.sql:662:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:663:
+  C:\VemGO\vemgo\supabase\schema.sql:664:  -- Localiza o pedido e garante que pertence ao cliente logado
+  C:\VemGO\vemgo\supabase\schema.sql:665:  select *
+  C:\VemGO\vemgo\supabase\schema.sql:666:  into v_order
+  C:\VemGO\vemgo\supabase\schema.sql:667:  from public.orders
+  C:\VemGO\vemgo\supabase\schema.sql:668:  where id = p_order_id
+  C:\VemGO\vemgo\supabase\schema.sql:669:    and client_id = v_user_id
+  C:\VemGO\vemgo\supabase\schema.sql:670:    and status = 'confirmed'
+  C:\VemGO\vemgo\supabase\schema.sql:671:  for update;
+  C:\VemGO\vemgo\supabase\schema.sql:672:
+  C:\VemGO\vemgo\supabase\schema.sql:673:  if not found then
+  C:\VemGO\vemgo\supabase\schema.sql:674:    raise exception 'Pedido não encontrado ou não está disponível para agendamento.';
+  C:\VemGO\vemgo\supabase\schema.sql:675:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:676:
+  C:\VemGO\vemgo\supabase\schema.sql:677:  -- Garante que existe profissional associado
+  C:\VemGO\vemgo\supabase\schema.sql:678:  select *
+  C:\VemGO\vemgo\supabase\schema.sql:679:  into v_professional
+  C:\VemGO\vemgo\supabase\schema.sql:680:  from public.professionals
+  C:\VemGO\vemgo\supabase\schema.sql:681:  where id = v_order.professional_id;
+  C:\VemGO\vemgo\supabase\schema.sql:682:
+  C:\VemGO\vemgo\supabase\schema.sql:683:  if not found then
+  C:\VemGO\vemgo\supabase\schema.sql:684:    raise exception 'Profissional não encontrado.';
+  C:\VemGO\vemgo\supabase\schema.sql:685:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:686:
+> C:\VemGO\vemgo\supabase\schema.sql:894:CREATE OR REPLACE FUNCTION "public"."respond_to_appointment_request"("p_appointment_id" "uuid", "p_decision" "text") RETURNS "public"."appointments"
+  C:\VemGO\vemgo\supabase\schema.sql:895:    LANGUAGE "plpgsql" SECURITY DEFINER
+  C:\VemGO\vemgo\supabase\schema.sql:896:    SET "search_path" TO 'public'
+  C:\VemGO\vemgo\supabase\schema.sql:897:    AS $$
+  C:\VemGO\vemgo\supabase\schema.sql:898:declare
+  C:\VemGO\vemgo\supabase\schema.sql:899:  v_user_id uuid;
+  C:\VemGO\vemgo\supabase\schema.sql:900:  v_appointment public.appointments%rowtype;
+  C:\VemGO\vemgo\supabase\schema.sql:901:  v_order public.orders%rowtype;
+  C:\VemGO\vemgo\supabase\schema.sql:902:begin
+  C:\VemGO\vemgo\supabase\schema.sql:903:  v_user_id := auth.uid();
+  C:\VemGO\vemgo\supabase\schema.sql:904:
+  C:\VemGO\vemgo\supabase\schema.sql:905:  if v_user_id is null then
+  C:\VemGO\vemgo\supabase\schema.sql:906:    raise exception 'Usuário não autenticado.';
+  C:\VemGO\vemgo\supabase\schema.sql:907:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:908:
+  C:\VemGO\vemgo\supabase\schema.sql:909:  if p_decision not in ('confirmed', 'declined') then
+  C:\VemGO\vemgo\supabase\schema.sql:910:    raise exception 'Decisão inválida.';
+  C:\VemGO\vemgo\supabase\schema.sql:911:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:912:
+  C:\VemGO\vemgo\supabase\schema.sql:913:  -- Localiza a solicitação e garante que pertence ao profissional logado
+  C:\VemGO\vemgo\supabase\schema.sql:914:  select *
+  C:\VemGO\vemgo\supabase\schema.sql:915:  into v_appointment
+  C:\VemGO\vemgo\supabase\schema.sql:916:  from public.appointments
+  C:\VemGO\vemgo\supabase\schema.sql:917:  where id = p_appointment_id
+  C:\VemGO\vemgo\supabase\schema.sql:918:    and professional_id = v_user_id
+  C:\VemGO\vemgo\supabase\schema.sql:919:  for update;
+  C:\VemGO\vemgo\supabase\schema.sql:920:
+  C:\VemGO\vemgo\supabase\schema.sql:921:  if not found then
+  C:\VemGO\vemgo\supabase\schema.sql:922:    raise exception 'Solicitação de horário não encontrada.';
+  C:\VemGO\vemgo\supabase\schema.sql:923:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:924:
+  C:\VemGO\vemgo\supabase\schema.sql:925:  -- Só pode responder a uma solicitação ainda pendente
+  C:\VemGO\vemgo\supabase\schema.sql:926:  if v_appointment.status <> 'scheduled'
+  C:\VemGO\vemgo\supabase\schema.sql:927:     or v_appointment.confirmed_at is not null then
+  C:\VemGO\vemgo\supabase\schema.sql:928:    raise exception 'Esta solicitação já foi respondida.';
+  C:\VemGO\vemgo\supabase\schema.sql:929:  end if;
+  C:\VemGO\vemgo\supabase\schema.sql:930:
+  C:\VemGO\vemgo\supabase\schema.sql:931:  -- Localiza o pedido
+  C:\VemGO\vemgo\supabase\schema.sql:932:  select *
+  C:\VemGO\vemgo\supabase\schema.sql:933:  into v_order
+  C:\VemGO\vemgo\supabase\schema.sql:934:  from public.orders
+  C:\VemGO\vemgo\supabase\schema.sql:935:  where id = v_appointment.order_id
+  C:\VemGO\vemgo\supabase\schema.sql:936:    and professional_id = v_user_id
+  C:\VemGO\vemgo\supabase\schema.sql:937:  for update;
+  C:\VemGO\vemgo\supabase\schema.sql:938:
+  C:\VemGO\vemgo\supabase\schema.sql:939:  if not found then
+> C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:235:CREATE OR REPLACE FUNCTION public.client_submit_appointment_outcome(
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:236:  p_appointment_id uuid,
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:237:  p_action text,
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:238:  p_description text DEFAULT NULL
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:239:)
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:240:RETURNS public.appointments
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:241:LANGUAGE plpgsql
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:242:SECURITY DEFINER
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:243:SET search_path = ''
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:244:AS $function$
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:245:DECLARE
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:246:  v_user_id uuid := auth.uid();
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:247:  v_action text := lower(btrim(p_action));
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:248:  v_note text := nullif(btrim(p_description), '');
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:249:  v_result text;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:250:  v_audit_action text;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:251:  v_now timestamptz := statement_timestamp();
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:252:  v_appointment public.appointments%ROWTYPE;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:253:  v_order public.orders%ROWTYPE;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:254:BEGIN
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:255:  IF v_user_id IS NULL THEN
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:256:    RAISE EXCEPTION 'Autenticação necessária.' USING ERRCODE = '28000';
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:257:  END IF;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:258:
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:259:  IF NOT EXISTS (
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:260:    SELECT 1 FROM public.profiles p
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:261:    WHERE p.id = v_user_id AND p.user_type = 'client'
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:262:  ) THEN
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:263:    RAISE EXCEPTION 'Ação disponível somente para o cliente titular.' USING ERRCODE = '42501';
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:264:  END IF;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:265:
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:266:  IF p_appointment_id IS NULL OR v_action IS NULL OR v_action NOT IN ('cancel', 'no_show', 'satisfied', 'problem') THEN
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:267:    RAISE EXCEPTION 'Ação ou agendamento inválido.' USING ERRCODE = '22023';
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:268:  END IF;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:269:
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:270:  IF v_action = 'problem' AND (v_note IS NULL OR char_length(v_note) > 2000) THEN
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:271:    RAISE EXCEPTION 'Descreva o problema em até 2000 caracteres.' USING ERRCODE = '22023';
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:272:  END IF;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:273:  IF v_action <> 'problem' AND v_note IS NOT NULL THEN
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:274:    RAISE EXCEPTION 'Descrição não aceita para esta ação.' USING ERRCODE = '22023';
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:275:  END IF;
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:276:
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:277:  -- Filtra pela titularidade antes de bloquear ou devolver a linha.
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:278:  SELECT a.*
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:279:    INTO v_appointment
+  C:\VemGO\vemgo\supabase\migrations\20261020140000_client_appointment_lifecycle.sql:280:  FROM public.appointments a

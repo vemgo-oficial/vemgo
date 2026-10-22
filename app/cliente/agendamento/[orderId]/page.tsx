@@ -1,22 +1,14 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
-
-type Order = {
-  id: string;
-  client_id: string;
-  professional_id: string;
-  service_id: string;
-  address_id: string;
-  price: number;
-  currency: string;
-  status: string;
-  scheduled_start: string | null;
-  scheduled_end: string | null;
-};
+import {
+  canClientCancelRequest,
+  getClientAppointmentActions,
+  getClientAppointmentState,
+} from "@/lib/client-appointment-status";
 
 type Appointment = {
   id: string;
@@ -24,1022 +16,721 @@ type Appointment = {
   professional_id: string;
   starts_at: string;
   ends_at: string;
-  status:
-    | "scheduled"
-    | "confirmed"
-    | "cancelled"
-    | "in_progress"
-    | "completed"
-    | "no_show";
+  status: string;
   confirmed_at: string | null;
   cancelled_at: string | null;
   cancellation_reason: string | null;
+  client_outcome: string | null;
+  client_outcome_note: string | null;
+  client_reported_at: string | null;
+  created_at: string;
 };
 
-type Availability = {
+type ClientAction = "cancel" | "no_show" | "satisfied" | "problem";
+
+type Order = {
   id: string;
-  day_of_week: number;
-  start_time: string;
-  end_time: string;
-  is_active: boolean;
+  request_id: string;
+  client_id: string;
+  professional_id: string | null;
+  service_id: string;
+  address_id: string;
+  price: number | null;
+  currency: string | null;
+  status: string;
+  scheduled_start: string | null;
+  scheduled_end: string | null;
+  started_at: string | null;
+  completed_at: string | null;
+  created_at: string;
 };
 
-type ScheduleData = {
-  order_id: string;
-  professional_id: string;
-  availability: Availability[];
-  appointments: Appointment[];
+type RequestInfo = {
+  id: string;
+  description: string | null;
+  urgency: string | null;
+  status: string;
+  service_id: string | null;
+  address_id: string;
+  created_at: string;
+  updated_at: string;
 };
 
-type SupabaseError = {
-  message?: string;
+type ServiceInfo = {
+  id: string;
+  name: string;
+  code: string;
 };
 
-const supabase = createSupabaseBrowserClient();
+type AddressInfo = {
+  label: string | null;
+  street: string | null;
+  number: string | null;
+  complement: string | null;
+  neighborhood: string | null;
+  city: string | null;
+  state: string | null;
+};
 
-function getErrorMessage(error: unknown, fallback: string) {
-  if (
-    typeof error === "object" &&
-    error !== null &&
-    "message" in error
-  ) {
-    const message = (error as SupabaseError).message;
+type ProfileInfo = {
+  full_name: string | null;
+  avatar_url: string | null;
+};
 
-    if (typeof message === "string" && message.length > 0) {
-      return message;
-    }
-  }
+function formatDateTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Data não disponível";
 
-  return fallback;
-}
-
-function formatCurrency(value: number) {
-  return value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
-}
-
-function formatDate(date: Date) {
-  return date.toLocaleDateString("pt-BR", {
+  return date.toLocaleString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
     weekday: "long",
     day: "2-digit",
-    month: "2-digit",
+    month: "long",
     year: "numeric",
   });
 }
 
-function formatDateShort(date: Date) {
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-  });
-}
+function formatTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "--:--";
 
-function formatTime(date: Date) {
   return date.toLocaleTimeString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
     hour: "2-digit",
     minute: "2-digit",
   });
 }
 
-function getLocalDateKey(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+function formatPrice(value: number | null, currency: string | null) {
+  if (value === null || !Number.isFinite(Number(value))) {
+    return "Preço não informado";
+  }
 
-  return `${year}-${month}-${day}`;
+  try {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: currency || "BRL",
+    }).format(value);
+  } catch {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  }
 }
 
-function createLocalDate(dateKey: string, hour: number) {
-  const [year, month, day] = dateKey.split("-").map(Number);
+function requestStatusCopy(status: string) {
+  const copy: Record<string, { title: string; description: string }> = {
+    pending: {
+      title: "Solicitação recebida",
+      description: "Sua solicitação foi registrada e aguarda processamento.",
+    },
+    classified: {
+      title: "Serviço identificado",
+      description:
+        "A solicitação foi classificada. Acompanhe aqui as atualizações da busca de profissionais.",
+    },
+    matching: {
+      title: "Buscando profissionais",
+      description:
+        "Estamos procurando profissionais compatíveis com sua solicitação.",
+    },
+    matched: {
+      title: "Aguardando aceite",
+      description:
+        "Há profissionais associados à solicitação. Acompanhe as próximas atualizações.",
+    },
+    scheduled: {
+      title: "Agendamento registrado",
+      description: "A solicitação avançou para a etapa de agendamento.",
+    },
+    cancelled: {
+      title: "Solicitação cancelada",
+      description: "Esta solicitação está encerrada.",
+    },
+    expired: {
+      title: "Solicitação expirada",
+      description: "Esta solicitação expirou e não está mais ativa.",
+    },
+    completed: {
+      title: "Solicitação concluída",
+      description: "Esta solicitação está marcada como concluída.",
+    },
+  };
 
-  return new Date(year, month - 1, day, hour, 0, 0, 0);
-}
-
-function timeToMinutes(time: string) {
-  const [hours, minutes] = time.slice(0, 5).split(":").map(Number);
-
-  return hours * 60 + minutes;
-}
-
-function getDayOfWeek(date: Date) {
-  return date.getDay();
-}
-
-function isSameHour(dateA: Date, dateB: Date) {
   return (
-    dateA.getFullYear() === dateB.getFullYear() &&
-    dateA.getMonth() === dateB.getMonth() &&
-    dateA.getDate() === dateB.getDate() &&
-    dateA.getHours() === dateB.getHours()
+    copy[status] ?? {
+      title: "Solicitação em andamento",
+      description: `Status atual: ${status}`,
+    }
   );
 }
 
+function appointmentStatus(
+  appointment: Appointment,
+  orderStatus: string,
+  now: number | null,
+) {
+  const state = getClientAppointmentState(appointment, orderStatus, now);
+
+  switch (state) {
+    case "scheduled":
+      return {
+        title: "Aguardando confirmação do profissional",
+        description:
+          "Sua solicitação de horário foi enviada. O atendimento só estará confirmado quando o profissional aceitar.",
+        className:
+          "border-amber-700/70 bg-amber-950/30 text-amber-300",
+      };
+
+    case "confirmed":
+      return {
+        title: "Agendamento confirmado",
+        description: "O profissional aceitou o horário solicitado.",
+        className:
+          "border-emerald-700/70 bg-emerald-950/30 text-emerald-300",
+      };
+
+    case "cancelled":
+      return {
+        title:
+          appointment.client_outcome === "cancelled_by_client"
+            ? "Atendimento cancelado por você"
+            : "Horário recusado ou cancelado",
+        description:
+          appointment.client_outcome === "cancelled_by_client"
+            ? "O horário e o pedido foram cancelados. Se ainda precisar do serviço, faça uma nova solicitação."
+            : "Este horário não está confirmado. Volte aos seus serviços para verificar as opções disponíveis.",
+        className: "border-red-700/70 bg-red-950/30 text-red-300",
+      };
+
+    case "rejected":
+      return {
+        title: "Horário recusado pelo profissional",
+        description:
+          "Este horário não foi aceito. Verifique as opções disponíveis em Meus serviços.",
+        className: "border-red-700/70 bg-red-950/30 text-red-300",
+      };
+
+    case "in_progress":
+      return {
+        title: "Atendimento em andamento",
+        description: "O atendimento já foi iniciado.",
+        className: "border-sky-700/70 bg-sky-950/30 text-sky-300",
+      };
+
+    case "completed":
+      return {
+        title: "Atendimento concluído",
+        description:
+          appointment.client_outcome === "problem_reported"
+            ? "Você relatou um problema. O pedido foi encaminhado para revisão, sem penalidade automática ao profissional."
+            : appointment.client_outcome === "satisfied"
+              ? "Você confirmou que o atendimento foi realizado satisfatoriamente."
+              : "O atendimento foi encerrado. Você ainda pode informar o resultado.",
+        className: "border-zinc-700 bg-zinc-900 text-zinc-300",
+      };
+
+    case "disputed":
+      return {
+        title: "Pendente de revisão",
+        description:
+          "Você relatou um problema. O caso foi encaminhado para revisão, sem penalidade automática ao profissional.",
+        className:
+          "border-amber-700/70 bg-amber-950/30 text-amber-300",
+      };
+
+    case "no_show":
+      return {
+        title: "Relato de não comparecimento enviado",
+        description:
+          "O relato foi registrado para revisão. Ele não determina culpa nem aplica penalidades automaticamente.",
+        className: "border-zinc-700 bg-zinc-900 text-zinc-300",
+      };
+
+    case "regularization":
+      return {
+        title: "Pendente de regularização",
+        description:
+          appointment.status === "scheduled"
+            ? "O horário passou sem confirmação do profissional. Verifique a situação antes de solicitar outro horário."
+            : "O horário passou e ainda não há registro de conclusão ou não comparecimento. A situação precisa ser regularizada.",
+        className:
+          "border-amber-700/70 bg-amber-950/30 text-amber-300",
+      };
+
+    case "started_unreported":
+      return {
+        title: "Horário iniciado — aguardando atualização",
+        description:
+          "O horário programado já começou, mas ainda não há atualização suficiente do atendimento. A situação precisa ser regularizada.",
+        className:
+          "border-amber-700/70 bg-amber-950/30 text-amber-300",
+      };
+
+    default:
+      return {
+        title: `Status do agendamento: ${appointment.status}`,
+        description: "Consulte esta tela para acompanhar a atualização.",
+        className: "border-zinc-700 bg-zinc-900 text-zinc-300",
+      };
+  }
+}
+
 export default function ClienteAgendamentoPage() {
-  const params = useParams();
   const router = useRouter();
-
-  const orderId = params.orderId as string;
-
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const params = useParams<{ orderId: string }>();
+  const recordId = params.orderId;
+  const supabase = createSupabaseBrowserClient();
 
   const [order, setOrder] = useState<Order | null>(null);
-  const [appointment, setAppointment] =
-    useState<Appointment | null>(null);
-  const [schedule, setSchedule] =
-    useState<ScheduleData | null>(null);
-
-  const [selectedDate, setSelectedDate] =
-    useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] =
-    useState<Date | null>(null);
-
-  const [isRescheduling, setIsRescheduling] =
+  const [request, setRequest] = useState<RequestInfo | null>(null);
+  const [service, setService] = useState<ServiceInfo | null>(null);
+  const [address, setAddress] = useState<AddressInfo | null>(null);
+  const [professional, setProfessional] = useState<ProfileInfo | null>(null);
+  const [appointment, setAppointment] = useState<Appointment | null>(null);
+  const [appointmentLifecycleAvailable, setAppointmentLifecycleAvailable] =
     useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [now, setNow] = useState<number | null>(null);
+  const [error, setError] = useState("");
+  const [clientAction, setClientAction] = useState<ClientAction | null>(null);
+  const [clientActionNote, setClientActionNote] = useState("");
+  const [clientActionBusy, setClientActionBusy] = useState(false);
+  const [clientActionMessage, setClientActionMessage] = useState("");
 
-  const today = useMemo(() => {
-    const date = new Date();
+  useEffect(() => {
+    const updateNow = () => setNow(Date.now());
+    updateNow();
 
-    date.setHours(0, 0, 0, 0);
-
-    return date;
+    const timer = window.setInterval(updateNow, 30_000);
+    return () => window.clearInterval(timer);
   }, []);
 
-  const calendarDays = useMemo(() => {
-    const days: Date[] = [];
+  const loadData = useCallback(
+    async (quiet = false) => {
+      if (quiet) setRefreshing(true);
+      else setLoading(true);
 
-    for (let i = 0; i < 30; i++) {
-      const date = new Date(today);
+      setError("");
 
-      date.setDate(today.getDate() + i);
+      try {
+        const {
+          data: { user },
+          error: authError,
+        } = await supabase.auth.getUser();
 
-      days.push(date);
-    }
+        if (authError) throw authError;
 
-    return days;
-  }, [today]);
-
-  function hasAvailableSlot(
-    date: Date,
-    scheduleData: ScheduleData | null
-  ) {
-    if (!scheduleData) {
-      return false;
-    }
-
-    const dayOfWeek = getDayOfWeek(date);
-
-    const availability =
-      scheduleData.availability.filter(
-        (item) =>
-          item.is_active &&
-          item.day_of_week === dayOfWeek
-      );
-
-    if (availability.length === 0) {
-      return false;
-    }
-
-    const appointments =
-      scheduleData.appointments || [];
-
-    for (const window of availability) {
-      const startMinutes = timeToMinutes(
-        window.start_time
-      );
-
-      const endMinutes = timeToMinutes(
-        window.end_time
-      );
-
-      for (
-        let minutes = startMinutes;
-        minutes + 60 <= endMinutes;
-        minutes += 60
-      ) {
-        const hour = Math.floor(minutes / 60);
-
-        const slotStart = createLocalDate(
-          getLocalDateKey(date),
-          hour
-        );
-
-        const slotEnd = new Date(slotStart);
-
-        slotEnd.setHours(
-          slotStart.getHours() + 1
-        );
-
-        const occupied = appointments.some((item) => {
-          if (
-            ![
-              "scheduled",
-              "confirmed",
-              "in_progress",
-            ].includes(item.status)
-          ) {
-            return false;
-          }
-
-          const appointmentStart =
-            new Date(item.starts_at);
-
-          const appointmentEnd =
-            new Date(item.ends_at);
-
-          return (
-            appointmentStart < slotEnd &&
-            appointmentEnd > slotStart
-          );
-        });
-
-        if (!occupied) {
-          return true;
+        if (!user) {
+          router.replace("/login");
+          return;
         }
-      }
-    }
 
-    return false;
-  }
-
-  function getAvailableTimes(date: Date) {
-    if (!schedule) {
-      return [];
-    }
-
-    const dayOfWeek = getDayOfWeek(date);
-
-    const availability =
-      schedule.availability.filter(
-        (item) =>
-          item.is_active &&
-          item.day_of_week === dayOfWeek
-      );
-
-    const appointments =
-      schedule.appointments || [];
-
-    const times: Date[] = [];
-
-    for (const window of availability) {
-      const startMinutes = timeToMinutes(
-        window.start_time
-      );
-
-      const endMinutes = timeToMinutes(
-        window.end_time
-      );
-
-      for (
-        let minutes = startMinutes;
-        minutes + 60 <= endMinutes;
-        minutes += 60
-      ) {
-        const hour = Math.floor(minutes / 60);
-
-        const slotStart = createLocalDate(
-          getLocalDateKey(date),
-          hour
-        );
-
-        const slotEnd = new Date(slotStart);
-
-        slotEnd.setHours(
-          slotStart.getHours() + 1
-        );
-
-        const occupied = appointments.some((item) => {
-          if (
-            ![
-              "scheduled",
-              "confirmed",
-              "in_progress",
-            ].includes(item.status)
-          ) {
-            return false;
-          }
-
-          const appointmentStart =
-            new Date(item.starts_at);
-
-          const appointmentEnd =
-            new Date(item.ends_at);
-
-          return (
-            appointmentStart < slotEnd &&
-            appointmentEnd > slotStart
-          );
-        });
-
-        if (!occupied) {
-          times.push(slotStart);
-        }
-      }
-    }
-
-    return times;
-  }
-
-  async function loadPage() {
-    setLoading(true);
-    setError("");
-
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        router.replace("/login");
-        return;
-      }
-
-      const { data: profile, error: profileError } =
-        await supabase
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("id,user_type,status")
           .eq("id", user.id)
-          .single();
+          .maybeSingle();
 
-      if (profileError) {
-        throw profileError;
-      }
+        if (profileError) throw profileError;
 
-      if (profile?.user_type !== "client") {
-        router.replace("/login");
-        return;
-      }
-
-      const { data: orderData, error: orderError } =
-        await supabase
-          .from("orders")
-          .select(
-            `
-              id,
-              client_id,
-              professional_id,
-              service_id,
-              address_id,
-              price,
-              currency,
-              status,
-              scheduled_start,
-              scheduled_end
-            `
-          )
-          .eq("id", orderId)
-          .eq("client_id", user.id)
-          .single();
-
-      if (orderError) {
-        throw orderError;
-      }
-
-      setOrder(orderData);
-
-      const {
-        data: scheduleData,
-        error: scheduleError,
-      } = await supabase.rpc(
-        "get_client_order_schedule",
-        {
-          p_order_id: orderId,
-        }
-      );
-
-      if (scheduleError) {
-        throw scheduleError;
-      }
-
-      const normalizedSchedule =
-        scheduleData as ScheduleData;
-
-      setSchedule(normalizedSchedule);
-
-      const appointments = [
-        ...(normalizedSchedule.appointments || []),
-      ].sort(
-        (a, b) =>
-          new Date(a.starts_at).getTime() -
-          new Date(b.starts_at).getTime()
-      );
-
-      const currentAppointment =
-        appointments.find(
-          (item) =>
-            item.order_id === orderId &&
-            [
-              "scheduled",
-              "confirmed",
-              "in_progress",
-            ].includes(item.status)
-        );
-
-      setAppointment(
-        currentAppointment || null
-      );
-
-      if (!currentAppointment) {
-        const firstAvailable =
-          calendarDays.find((date) =>
-            hasAvailableSlot(
-              date,
-              normalizedSchedule
-            )
+        if (!profile || profile.user_type !== "client") {
+          router.replace(
+            profile?.user_type === "professional"
+              ? "/profissional"
+              : profile?.user_type === "admin"
+                ? "/controle"
+                : "/login",
           );
-
-        if (firstAvailable) {
-          setSelectedDate(firstAvailable);
+          return;
         }
-      }
-    } catch (err: unknown) {
-      console.error(err);
 
-      setError(
-        getErrorMessage(
-          err,
-          "Não foi possível carregar o agendamento."
-        )
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
+        if (profile.status === "blocked") {
+          await supabase.auth.signOut();
+          router.replace("/login");
+          return;
+        }
 
-  async function handleRequestTime() {
-    if (
-      !selectedDate ||
-      !selectedTime ||
-      !order
-    ) {
-      return;
-    }
+        let lifecycleAvailable = true;
 
-    setSaving(true);
-    setError("");
-    setMessage("");
-
-    try {
-      const start = new Date(selectedTime);
-
-      const end = new Date(start);
-
-      end.setHours(
-        end.getHours() + 1
-      );
-
-      let data;
-      let rpcError;
-
-      if (isRescheduling) {
-        const response = await supabase.rpc(
-          "reschedule_appointment_slot",
-          {
-            p_order_id: order.id,
-            p_starts_at: start.toISOString(),
-            p_ends_at: end.toISOString(),
-          }
+        const { error: lifecycleError } = await supabase.rpc(
+          "get_client_appointment_actions",
+          { p_record_id: recordId },
         );
 
-        data = response.data;
-        rpcError = response.error;
-      } else {
-        const response = await supabase.rpc(
-          "request_appointment_slot",
-          {
-            p_order_id: order.id,
-            p_starts_at: start.toISOString(),
-            p_ends_at: end.toISOString(),
+        if (
+          lifecycleError &&
+          /function|schema cache|does not exist|could not find/i.test(
+            lifecycleError.message,
+          )
+        ) {
+          lifecycleAvailable = false;
+          console.warn(
+            "[VemGO] RPC de ações do atendimento não está disponível neste ambiente.",
+          );
+        }
+
+        const orderSelect =
+          "id, request_id, client_id, professional_id, service_id, address_id, price, currency, status, scheduled_start, scheduled_end, started_at, completed_at, created_at";
+
+        const requestSelect =
+          "id, description, urgency, status, service_id, address_id, created_at, updated_at";
+
+        const { data: orderById, error: orderByIdError } = await supabase
+          .from("orders")
+          .select(orderSelect)
+          .eq("id", recordId)
+          .eq("client_id", user.id)
+          .maybeSingle();
+
+        if (orderByIdError) throw orderByIdError;
+
+        let currentOrder = (orderById as Order | null) ?? null;
+        let currentRequest: RequestInfo | null = null;
+
+        if (!currentOrder) {
+          const { data: requestById, error: requestError } = await supabase
+            .from("requests")
+            .select(requestSelect)
+            .eq("id", recordId)
+            .eq("client_id", user.id)
+            .maybeSingle();
+
+          if (requestError) throw requestError;
+
+          currentRequest = (requestById as RequestInfo | null) ?? null;
+
+          if (currentRequest) {
+            const { data: relatedOrder, error: relatedOrderError } =
+              await supabase
+                .from("orders")
+                .select(orderSelect)
+                .eq("request_id", currentRequest.id)
+                .eq("client_id", user.id)
+                .order("created_at", { ascending: false })
+                .limit(1)
+                .maybeSingle();
+
+            if (relatedOrderError) throw relatedOrderError;
+
+            currentOrder = (relatedOrder as Order | null) ?? null;
           }
+        } else if (currentOrder.request_id) {
+          const { data: requestData, error: requestError } = await supabase
+            .from("requests")
+            .select(requestSelect)
+            .eq("id", currentOrder.request_id)
+            .eq("client_id", user.id)
+            .maybeSingle();
+
+          if (requestError) throw requestError;
+
+          currentRequest = (requestData as RequestInfo | null) ?? null;
+        }
+
+        setOrder(currentOrder);
+        setRequest(currentRequest);
+
+        if (!currentOrder) {
+          setAppointment(null);
+          setProfessional(null);
+          setService(null);
+          setAddress(null);
+          setAppointmentLifecycleAvailable(lifecycleAvailable);
+          setLoading(false);
+          setRefreshing(false);
+          return;
+        }
+
+        const [serviceResult, addressResult, appointmentResult] =
+          await Promise.all([
+            supabase
+              .from("services")
+              .select("id,name,code")
+              .eq("id", currentOrder.service_id)
+              .maybeSingle(),
+
+            supabase
+              .from("addresses")
+              .select(
+                "label,street,number,complement,neighborhood,city,state",
+              )
+              .eq("id", currentOrder.address_id)
+              .maybeSingle(),
+
+            supabase
+              .from("appointments")
+              .select(
+                "id, order_id, professional_id, starts_at, ends_at, status, confirmed_at, cancelled_at, cancellation_reason, client_outcome, client_outcome_note, client_reported_at, created_at",
+              )
+              .eq("order_id", currentOrder.id)
+              .order("created_at", { ascending: false })
+              .limit(1)
+              .maybeSingle(),
+          ]);
+
+        if (serviceResult.error) {
+          console.error(
+            "[VemGO] Erro ao carregar serviço:",
+            serviceResult.error.message,
+          );
+        }
+
+        if (addressResult.error) {
+          console.error(
+            "[VemGO] Erro ao carregar endereço:",
+            addressResult.error.message,
+          );
+        }
+
+        if (appointmentResult.error) {
+          console.error(
+            "[VemGO] Erro ao carregar agendamento:",
+            appointmentResult.error.message,
+          );
+        }
+
+        setService((serviceResult.data as ServiceInfo | null) ?? null);
+        setAddress((addressResult.data as AddressInfo | null) ?? null);
+
+        const appointmentData =
+          (appointmentResult.data as Appointment | null) ?? null;
+
+        setAppointment(appointmentData);
+        setAppointmentLifecycleAvailable(lifecycleAvailable);
+
+        if (currentOrder.professional_id) {
+          const { data: profileData, error: professionalError } =
+            await supabase
+              .from("profiles")
+              .select("full_name,avatar_url")
+              .eq("id", currentOrder.professional_id)
+              .maybeSingle();
+
+          if (professionalError) {
+            console.error(
+              "[VemGO] Erro ao carregar profissional:",
+              professionalError.message,
+            );
+          }
+
+          setProfessional((profileData as ProfileInfo | null) ?? null);
+        } else {
+          setProfessional(null);
+        }
+      } catch (err) {
+        console.error("[VemGO] Erro ao carregar acompanhamento:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Não foi possível carregar o acompanhamento.",
         );
-
-        data = response.data;
-        rpcError = response.error;
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
       }
+    },
+    [recordId, router, supabase],
+  );
 
-      if (rpcError) {
-        throw rpcError;
-      }
-
-      setAppointment(data as Appointment);
-
-      setMessage(
-        isRescheduling
-          ? `Novo horário solicitado: ${formatDate(
-              start
-            )} às ${formatTime(start)}.`
-          : `Solicitação enviada para ${formatDate(
-              start
-            )} às ${formatTime(start)}.`
-      );
-
-      setTimeout(() => {
-        router.push("/cliente/servicos");
-      }, 900);
-    } catch (err: unknown) {
-      console.error(err);
-
-      setError(
-        getErrorMessage(
-          err,
-          "Não foi possível solicitar este horário."
-        )
-      );
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  function startRescheduling() {
-    setError("");
-    setMessage("");
-    setSelectedTime(null);
-    setIsRescheduling(true);
-
-    const firstAvailable =
-      calendarDays.find((date) =>
-        hasAvailableSlot(date, schedule)
-      );
-
-    if (firstAvailable) {
-      setSelectedDate(firstAvailable);
-    }
-  }
-
-  function cancelRescheduling() {
-    setIsRescheduling(false);
-    setSelectedTime(null);
-    setError("");
-    setMessage("");
-  }
-
-  /*
-   * O carregamento da página é uma sincronização com
-   * Supabase/Auth e precisa atualizar estados locais.
-   * Mantemos o efeito isolado e controlado pelo orderId.
-   */
-  /* eslint-disable react-hooks/set-state-in-effect */
-  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    if (!orderId) {
-      return;
-    }
+    if (!recordId) return;
 
-    void loadPage();
-  }, [orderId]);
-  /* eslint-enable react-hooks/exhaustive-deps */
-  /* eslint-enable react-hooks/set-state-in-effect */
+    const timer = window.setTimeout(() => {
+      void loadData();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [recordId, loadData]);
+
+  useEffect(() => {
+    if (!recordId) return;
+
+    const timer = window.setInterval(() => {
+      void loadData(true);
+    }, 30_000);
+
+    return () => window.clearInterval(timer);
+  }, [recordId, loadData]);
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-zinc-400">
-          Carregando agendamento...
+      <main className="min-h-screen bg-black px-5 py-16 text-white">
+        <div className="mx-auto max-w-5xl text-center text-zinc-400">
+          Carregando acompanhamento do atendimento...
         </div>
       </main>
     );
   }
 
-  if (!order) {
-    return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
-        <div className="max-w-md text-center">
-          <p className="mb-5 text-red-400">
-            {error ||
-              "Serviço não encontrado."}
-          </p>
+  const requestStatus = request
+    ? requestStatusCopy(request.status)
+    : null;
 
-          <button
-            onClick={() =>
-              router.push("/cliente/servicos")
-            }
-            className="rounded-xl bg-emerald-500 px-5 py-3 font-semibold text-black"
-          >
-            Voltar para meus serviços
-          </button>
-        </div>
-      </main>
-    );
-  }
-
-  const appointmentStart =
-    appointment
-      ? new Date(appointment.starts_at)
+  const status =
+    appointment && order
+      ? appointmentStatus(appointment, order.status, now)
       : null;
 
-  const appointmentEnd =
-    appointment
-      ? new Date(appointment.ends_at)
-      : null;
+  const mapsAddress = address
+    ? [
+        address.street,
+        address.number,
+        address.complement,
+        address.neighborhood,
+        address.city,
+        address.state,
+      ]
+        .filter(Boolean)
+        .join(", ")
+    : "";
 
-  const availableTimes =
-    selectedDate
-      ? getAvailableTimes(selectedDate)
-      : [];
-
-  const showPending =
-    appointment?.status === "scheduled" &&
-    !isRescheduling;
-
-  const showConfirmed =
-    appointment?.status === "confirmed" &&
-    !isRescheduling;
+  const mapsUrl = mapsAddress
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsAddress)}`
+    : null;
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <header className="border-b border-zinc-800 bg-black">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <button
-            onClick={() =>
-              router.push("/cliente/servicos")
-            }
-            className="flex items-center"
+      <header className="border-b border-white/10 bg-zinc-950">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-5">
+          <Link
+            href="/cliente"
+            className="text-lg font-bold tracking-wide text-white"
           >
-            <Image
-              src="/logo-vemgo.png"
-              alt="VemGO"
-              width={130}
-              height={42}
-              priority
-            />
-          </button>
+            Vem<span className="text-emerald-400">GO</span>
+          </Link>
 
           <button
-            onClick={() =>
-              router.push("/cliente/servicos")
-            }
-            className="text-sm text-zinc-400 hover:text-white"
+            type="button"
+            onClick={() => void loadData(true)}
+            disabled={refreshing}
+            className="rounded-xl border border-white/15 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-emerald-400 hover:text-emerald-300 disabled:opacity-50"
           >
-            ← Meus serviços
+            {refreshing ? "Atualizando..." : "Atualizar"}
           </button>
         </div>
       </header>
 
-      <section className="mx-auto max-w-5xl px-6 py-10">
-        <div className="mb-8">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-emerald-400">
-            VemGO • Agendamento
+      <section className="mx-auto max-w-5xl px-5 py-10">
+        <Link
+          href="/cliente"
+          className="text-sm font-semibold text-emerald-400 transition hover:text-emerald-300"
+        >
+          ← Voltar para minha área
+        </Link>
+
+        <div className="mt-6">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">
+            ACOMPANHAMENTO
           </p>
-
-          <h1 className="text-3xl font-bold">
-            {showConfirmed
-              ? "Serviço agendado"
-              : showPending
-              ? "Aguardando confirmação"
-              : isRescheduling
-              ? "Reagendar serviço"
-              : "Escolha quando você pode receber o serviço"}
+          <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
+            Meu atendimento
           </h1>
-
-          <p className="mt-2 text-zinc-400">
-            Valor do serviço:{" "}
-            <span className="font-semibold text-white">
-              {formatCurrency(
-                Number(order.price)
-              )}
-            </span>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-400">
+            Acompanhe o andamento da solicitação, os dados do profissional e
+            as informações do agendamento.
           </p>
         </div>
 
         {error && (
-          <div className="mb-6 rounded-xl border border-red-900 bg-red-950/40 px-5 py-4 text-sm text-red-300">
+          <div
+            role="alert"
+            className="mt-6 rounded-2xl border border-red-800 bg-red-950/40 p-5 text-sm text-red-300"
+          >
             {error}
           </div>
         )}
 
-        {message && (
-          <div className="mb-6 rounded-xl border border-emerald-800 bg-emerald-950/40 px-5 py-4 text-sm text-emerald-300">
-            {message}
+        {status && (
+          <div
+            className={`mt-8 rounded-2xl border p-6 ${status.className}`}
+          >
+            <p className="text-xs font-bold uppercase tracking-wider opacity-80">
+              Status do atendimento
+            </p>
+            <h2 className="mt-2 text-xl font-bold">{status.title}</h2>
+            <p className="mt-2 text-sm leading-6 opacity-90">
+              {status.description}
+            </p>
+            <p className="mt-4 text-xs opacity-70">
+              {refreshing
+                ? "Atualizando informações..."
+                : "As informações são atualizadas automaticamente."}
+            </p>
           </div>
         )}
 
-        {showPending &&
-          appointmentStart &&
-          appointmentEnd && (
-            <div className="rounded-2xl border border-yellow-800 bg-zinc-950 p-7">
-              <div className="mb-6">
-                <span className="inline-flex rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-400">
-                  AGUARDANDO CONFIRMAÇÃO
-                </span>
-              </div>
-
-              <h2 className="text-2xl font-bold">
-                Horário solicitado
-              </h2>
-
-              <div className="mt-6 rounded-xl border border-zinc-800 bg-black p-5">
-                <p className="text-sm text-zinc-500">
-                  Data
-                </p>
-
-                <p className="mt-1 text-lg font-semibold capitalize">
-                  {formatDate(
-                    appointmentStart
-                  )}
-                </p>
-
-                <p className="mt-4 text-sm text-zinc-500">
-                  Horário
-                </p>
-
-                <p className="mt-1 text-lg font-semibold">
-                  {formatTime(
-                    appointmentStart
-                  )}{" "}
-                  às{" "}
-                  {formatTime(
-                    appointmentEnd
-                  )}
-                </p>
-              </div>
-
-              <p className="mt-5 text-sm leading-6 text-zinc-400">
-                O profissional ainda precisa
-                confirmar ou recusar este horário.
+        {!order && request && (
+          <div className="mt-8 rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Solicitação
+            </p>
+            <h2 className="mt-2 text-xl font-bold">
+              {requestStatus?.title}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-zinc-400">
+              {requestStatus?.description}
+            </p>
+            {request.description && (
+              <p className="mt-5 whitespace-pre-wrap text-sm leading-6 text-zinc-200">
+                {request.description}
               </p>
-
-              <button
-                onClick={() =>
-                  router.push(
-                    "/cliente/servicos"
-                  )
-                }
-                className="mt-7 w-full rounded-xl border border-zinc-700 px-5 py-3 font-semibold text-white transition hover:bg-zinc-900"
-              >
-                Voltar para meus serviços
-              </button>
-            </div>
-          )}
-
-        {showConfirmed &&
-          appointmentStart &&
-          appointmentEnd && (
-            <div className="rounded-2xl border border-emerald-800 bg-zinc-950 p-7">
-              <div className="mb-6">
-                <span className="inline-flex rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
-                  AGENDADO
-                </span>
-              </div>
-
-              <h2 className="text-2xl font-bold">
-                Seu serviço está agendado
-              </h2>
-
-              <div className="mt-6 rounded-xl border border-zinc-800 bg-black p-5">
-                <p className="text-sm text-zinc-500">
-                  Data
-                </p>
-
-                <p className="mt-1 text-lg font-semibold capitalize">
-                  {formatDate(
-                    appointmentStart
-                  )}
-                </p>
-
-                <p className="mt-4 text-sm text-zinc-500">
-                  Horário
-                </p>
-
-                <p className="mt-1 text-lg font-semibold">
-                  {formatTime(
-                    appointmentStart
-                  )}{" "}
-                  às{" "}
-                  {formatTime(
-                    appointmentEnd
-                  )}
-                </p>
-              </div>
-
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <button
-                  onClick={() =>
-                    router.push(
-                      "/cliente/servicos"
-                    )
-                  }
-                  className="flex-1 rounded-xl border border-zinc-700 px-5 py-3 font-semibold text-white transition hover:bg-zinc-900"
-                >
-                  Voltar para meus serviços
-                </button>
-
-                <button
-                  onClick={startRescheduling}
-                  className="flex-1 rounded-xl bg-emerald-500 px-5 py-3 font-bold text-black transition hover:bg-emerald-400"
-                >
-                  Reagendar
-                </button>
-              </div>
-            </div>
-          )}
-
-        {(!appointment ||
-          isRescheduling) && (
-          <div>
-            {isRescheduling && (
-              <div className="mb-6 rounded-xl border border-emerald-800 bg-emerald-950/30 px-5 py-4">
-                <p className="font-semibold text-emerald-400">
-                  Reagendamento
-                </p>
-
-                <p className="mt-1 text-sm text-zinc-400">
-                  Escolha um novo horário. O horário
-                  atual será substituído e o novo
-                  horário precisará ser confirmado
-                  pelo profissional.
-                </p>
-              </div>
             )}
+          </div>
+        )}
 
-            <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-                <h2 className="text-lg font-bold">
-                  Escolha a data
+        {order && (
+          <>
+            <div className="mt-8 grid gap-5 lg:grid-cols-2">
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                  Serviço
+                </p>
+                <h2 className="mt-2 text-xl font-bold">
+                  {service?.name || "Serviço solicitado"}
                 </h2>
-
-                <div className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-5">
-                  {calendarDays.map(
-                    (date) => {
-                      const available =
-                        hasAvailableSlot(
-                          date,
-                          schedule
-                        );
-
-                      const selected =
-                        selectedDate &&
-                        getLocalDateKey(
-                          selectedDate
-                        ) ===
-                          getLocalDateKey(
-                            date
-                          );
-
-                      return (
-                        <button
-                          key={getLocalDateKey(
-                            date
-                          )}
-                          disabled={
-                            !available
-                          }
-                          onClick={() => {
-                            setSelectedDate(
-                              date
-                            );
-                            setSelectedTime(
-                              null
-                            );
-                            setError("");
-                          }}
-                          className={[
-                            "rounded-xl border px-3 py-4 text-center transition",
-                            selected
-                              ? "border-emerald-400 bg-emerald-500 text-black"
-                              : available
-                              ? "border-zinc-700 bg-black text-white hover:border-emerald-500"
-                              : "cursor-not-allowed border-zinc-900 bg-zinc-900 text-zinc-700",
-                          ].join(" ")}
-                        >
-                          <div className="text-xs uppercase">
-                            {date.toLocaleDateString(
-                              "pt-BR",
-                              {
-                                weekday:
-                                  "short",
-                              }
-                            )}
-                          </div>
-
-                          <div className="mt-1 text-lg font-bold">
-                            {date.getDate()}
-                          </div>
-
-                          <div className="text-xs">
-                            {date.toLocaleDateString(
-                              "pt-BR",
-                              {
-                                month:
-                                  "short",
-                              }
-                            )}
-                          </div>
-                        </button>
-                      );
-                    }
-                  )}
+                {service?.code && (
+                  <p className="mt-2 text-sm text-zinc-400">
+                    Código: {service.code}
+                  </p>
+                )}
+                {request?.description && (
+                  <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                    {request.description}
+                  </p>
+                )}
+                <div className="mt-5 border-t border-white/10 pt-4">
+                  <p className="text-xs text-zinc-500">Valor</p>
+                  <p className="mt-1 text-2xl font-bold text-emerald-400">
+                    {formatPrice(order.price, order.currency)}
+                  </p>
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-                <h2 className="text-lg font-bold">
-                  {selectedDate
-                    ? `Horários — ${formatDateShort(
-                        selectedDate
-                      )}`
-                    : "Escolha uma data"}
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                  Endereço do atendimento
+                </p>
+                <h2 className="mt-2 text-lg font-bold">
+                  {address?.label || "Local do atendimento"}
                 </h2>
-
-                {selectedDate && (
-                  <div className="mt-5 space-y-3">
-                    {availableTimes.length ===
-                    0 ? (
-                      <p className="text-sm text-zinc-500">
-                        Não há horários disponíveis
-                        nesta data.
-                      </p>
-                    ) : (
-                      availableTimes.map(
-                        (time) => {
-                          const selected =
-                            selectedTime &&
-                            isSameHour(
-                              selectedTime,
-                              time
-                            );
-
-                          return (
-                            <button
-                              key={time.toISOString()}
-                              onClick={() => {
-                                setSelectedTime(
-                                  time
-                                );
-                                setError("");
-                              }}
-                              className={[
-                                "w-full rounded-xl border px-4 py-3 text-left font-semibold transition",
-                                selected
-                                  ? "border-emerald-400 bg-emerald-500 text-black"
-                                  : "border-zinc-700 bg-black text-white hover:border-emerald-500",
-                              ].join(" ")}
-                            >
-                              {formatTime(
-                                time
-                              )}{" "}
-                              —{" "}
-                              {formatTime(
-                                new Date(
-                                  time.getTime() +
-                                    60 *
-                                      60 *
-                                      1000
-                                )
-                              )}
-                            </button>
-                          );
-                        }
-                      )
-                    )}
-                  </div>
-                )}
-
-                <button
-                  disabled={
-                    !selectedTime ||
-                    saving
-                  }
-                  onClick={
-                    handleRequestTime
-                  }
-                  className="mt-7 w-full rounded-xl bg-emerald-500 px-5 py-3 font-bold text-black transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {saving
-                    ? "Enviando..."
-                    : isRescheduling
-                    ? "Solicitar novo horário"
-                    : "Solicitar este horário"}
-                </button>
-
-                {isRescheduling && (
-                  <button
-                    onClick={
-                      cancelRescheduling
-                    }
-                    className="mt-3 w-full rounded-xl border border-zinc-700 px-5 py-3 font-semibold text-white hover:bg-zinc-900"
-                  >
-                    Cancelar reagendamento
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 text-sm text-zinc-400">
-              <strong className="text-white">
-                Importante:
-              </strong>{" "}
-              o horário escolhido é uma
-              solicitação. O serviço só fica
-              definitivamente agendado depois que
-              o profissional confirmar.
-            </div>
-          </div>
-        )}
-      </section>
-    </main>
-  );
-}
+                <p className="mt-3 text-sm leading-6 text-zinc-300">
+                  {[
+                    address?.street,
+                    address?.number,
+                    address?.complement,
+                    address?.neighborhood,
+                    address?.city,
+                    address?.state,
+                  ]
+                    .filter(Boolean)
+                    .join(", ") || "Endereço não disponível."}
+                </p>
+                {mapsUrl && (
+                  <a
+                    href={mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline

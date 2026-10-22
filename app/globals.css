@@ -1,196 +1,90 @@
 @import "tailwindcss";
 
-/* =========================================================
-   VEMGO — DESIGN SYSTEM FOUNDATION
-   Dark-first / AI-native / Marketplace
-   ========================================================= */
-
 :root {
-  /* -------------------------------------------------------
-     CORE
-     ------------------------------------------------------- */
+  --background: #09090b;
+  --foreground: #fafafa;
 
-  --background: #050505;
-  --foreground: #f5f5f5;
+  --surface-1: #111113;
+  --surface-2: #18181b;
+  --surface-3: #1f1f23;
 
-  --surface-0: #050505;
-  --surface-1: #0a0a0a;
-  --surface-2: #101010;
-  --surface-3: #161616;
-  --surface-4: #1c1c1c;
+  --border: #27272a;
+  --border-strong: #3f3f46;
 
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-default: rgba(255, 255, 255, 0.11);
-  --border-strong: rgba(255, 255, 255, 0.18);
-
-  /* -------------------------------------------------------
-     TEXT
-     ------------------------------------------------------- */
-
-  --text-primary: #f5f5f5;
+  --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
   --text-tertiary: #71717a;
-  --text-disabled: #52525b;
-  --text-inverse: #050505;
 
-  /* -------------------------------------------------------
-     VEMGO BRAND
-     ------------------------------------------------------- */
-
-  --vemgo-green: #00a86b;
-  --vemgo-green-hover: #00bd78;
-  --vemgo-green-soft: rgba(0, 168, 107, 0.12);
-  --vemgo-green-border: rgba(0, 168, 107, 0.28);
+  --vemgo-green: #10b981;
+  --vemgo-green-dark: #059669;
 
   --vemgo-orange: #f97316;
-  --vemgo-orange-hover: #fb923c;
-  --vemgo-orange-soft: rgba(249, 115, 22, 0.12);
-  --vemgo-orange-border: rgba(249, 115, 22, 0.28);
+  --vemgo-orange-dark: #ea580c;
 
   --vemgo-blue: #3b82f6;
-  --vemgo-blue-hover: #60a5fa;
-  --vemgo-blue-soft: rgba(59, 130, 246, 0.12);
-  --vemgo-blue-border: rgba(59, 130, 246, 0.28);
-
-  /* -------------------------------------------------------
-     SEMANTIC
-     ------------------------------------------------------- */
-
-  --success: #22c55e;
-  --success-soft: rgba(34, 197, 94, 0.12);
-
-  --warning: #f59e0b;
-  --warning-soft: rgba(245, 158, 11, 0.12);
+  --portal-accent: var(--vemgo-green);
 
   --danger: #ef4444;
-  --danger-soft: rgba(239, 68, 68, 0.12);
+  --warning: #f59e0b;
+  --success: #10b981;
+}
 
-  --info: #3b82f6;
-  --info-soft: rgba(59, 130, 246, 0.12);
-
-  /* -------------------------------------------------------
-     TYPOGRAPHY
-     ------------------------------------------------------- */
-
-  --font-sans: Arial, Helvetica, sans-serif;
-
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-md: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-
-  --leading-tight: 1.2;
-  --leading-normal: 1.5;
-  --leading-relaxed: 1.65;
-
-  /* -------------------------------------------------------
-     SPACING
-     ------------------------------------------------------- */
-
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-
-  /* -------------------------------------------------------
-     RADIUS
-     ------------------------------------------------------- */
-
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-  --radius-xl: 1.125rem;
-  --radius-2xl: 1.5rem;
-  --radius-full: 9999px;
-
-  /* -------------------------------------------------------
-     SHADOWS
-     ------------------------------------------------------- */
-
-  --shadow-sm:
-    0 1px 2px rgba(0, 0, 0, 0.35),
-    0 1px 3px rgba(0, 0, 0, 0.18);
-
-  --shadow-md:
-    0 4px 12px rgba(0, 0, 0, 0.35),
-    0 2px 6px rgba(0, 0, 0, 0.18);
-
-  --shadow-lg:
-    0 12px 32px rgba(0, 0, 0, 0.45),
-    0 4px 12px rgba(0, 0, 0, 0.22);
-
-  /* -------------------------------------------------------
-     MOTION
-     ------------------------------------------------------- */
-
-  --transition-fast: 120ms ease;
-  --transition-normal: 180ms ease;
-  --transition-slow: 260ms ease;
-
-  /* -------------------------------------------------------
-     LAYOUT
-     ------------------------------------------------------- */
-
-  --content-max-width: 1280px;
-  --content-narrow-width: 760px;
-  --sidebar-width: 260px;
-  --header-height: 64px;
-
-  /* -------------------------------------------------------
-     Z-INDEX
-     ------------------------------------------------------- */
-
-  --z-header: 40;
-  --z-dropdown: 50;
-  --z-modal: 100;
-  --z-toast: 200;
+/* The client portal uses the VemGO emerald family as its single green scale.
+   Alias legacy Tailwind `green-*` utilities to the same emerald tokens only
+   inside the client shell; warning, error, and success colors stay semantic. */
+[data-portal-shell="client"] {
+  --color-green-50: var(--color-emerald-50);
+  --color-green-100: var(--color-emerald-100);
+  --color-green-200: var(--color-emerald-200);
+  --color-green-300: var(--color-emerald-300);
+  --color-green-400: var(--color-emerald-400);
+  --color-green-500: var(--color-emerald-500);
+  --color-green-600: var(--color-emerald-600);
+  --color-green-700: var(--color-emerald-700);
+  --color-green-800: var(--color-emerald-800);
+  --color-green-900: var(--color-emerald-900);
+  --color-green-950: var(--color-emerald-950);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --color-surface-0: var(--surface-0);
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
-  --color-surface-4: var(--surface-4);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
-  --color-text-disabled: var(--text-disabled);
 
   --color-vemgo-green: var(--vemgo-green);
+  --color-vemgo-green-dark: var(--vemgo-green-dark);
+
   --color-vemgo-orange: var(--vemgo-orange);
+  --color-vemgo-orange-dark: var(--vemgo-orange-dark);
+
   --color-vemgo-blue: var(--vemgo-blue);
 
-  --color-success: var(--success);
-  --color-warning: var(--warning);
   --color-danger: var(--danger);
-  --color-info: var(--info);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
 
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
-/* =========================================================
-   BASE
-   ========================================================= */
+* {
+  box-sizing: border-box;
+}
 
 html {
+  min-height: 100%;
   background: var(--background);
   color-scheme: dark;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -198,43 +92,10 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
-  font-size: var(--text-md);
-  line-height: var(--leading-normal);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
-
-/* =========================================================
-   SELECTION
-   ========================================================= */
-
-::selection {
-  background: rgba(0, 168, 107, 0.3);
-  color: #ffffff;
-}
-
-/* =========================================================
-   FOCUS
-   ========================================================= */
-
-:focus-visible {
-  outline: 2px solid var(--vemgo-green);
-  outline-offset: 2px;
-}
-
-/* =========================================================
-   LINKS
-   ========================================================= */
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* =========================================================
-   BUTTONS / INPUTS
-   ========================================================= */
 
 button,
 input,
@@ -251,66 +112,55 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* =========================================================
-   INPUT AUTOFILL
-   ========================================================= */
+input,
+textarea,
+select {
+  color: var(--text-primary);
+  background-color: var(--surface-2);
+}
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill {
-  -webkit-text-fill-color: var(--text-primary);
-  -webkit-box-shadow: 0 0 0 1000px var(--surface-2) inset;
-  transition: background-color 9999s ease-in-out 0s;
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgb(16 185 129 / 0.25);
+  color: white;
 }
 
 /* =========================================================
    SCROLLBAR
    ========================================================= */
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #2a2a2a transparent;
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+::-webkit-scrollbar-track {
+  background: #09090b;
 }
 
-*::-webkit-scrollbar-track {
-  background: transparent;
+::-webkit-scrollbar-thumb {
+  border: 2px solid #09090b;
+  border-radius: 999px;
+  background: #3f3f46;
 }
 
-*::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
-  border-radius: var(--radius-full);
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
-}
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
 }
 
 /* =========================================================
@@ -326,5 +176,20 @@ select:-webkit-autofill {
   textarea,
   select {
     font-size: 16px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

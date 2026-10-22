@@ -1,0 +1,7 @@
+﻿C:\VemGO\vemgo\supabase-schema.sql:2469: "latitude" double precision,
+C:\VemGO\vemgo\supabase-schema.sql:2470: "longitude" double precision,
+C:\VemGO\vemgo\supabase-schema.sql:2495: CREATE TABLE IF NOT EXISTS "public"."categories" (
+C:\VemGO\vemgo\supabase\schema.sql:47: CREATE EXTENSION IF NOT EXISTS "postgis" WITH SCHEMA "gis";
+C:\VemGO\vemgo\supabase\schema.sql:1529: "latitude" double precision,
+C:\VemGO\vemgo\supabase\schema.sql:1530: "longitude" double precision,
+C:\VemGO\vemgo\supabase\schema.sql:1555: CREATE TABLE IF NOT EXISTS "public"."categories" (

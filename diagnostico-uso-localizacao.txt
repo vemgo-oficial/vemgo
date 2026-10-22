@@ -1,0 +1,21 @@
+﻿C:\VemGO\vemgo\app\cadastro-profissional\endereco\page.tsx:71: .from("addresses")
+C:\VemGO\vemgo\app\cadastro-profissional\endereco\page.tsx:220: .from("addresses")
+C:\VemGO\vemgo\app\cadastro-profissional\endereco\page.tsx:252: .from("addresses")
+C:\VemGO\vemgo\app\cadastro-profissional\endereco\page.tsx:265: .from("addresses")
+C:\VemGO\vemgo\app\cliente\page.tsx:473: .from("addresses")
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:382: supabase.from("addresses")
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:412: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:50: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:88: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:102: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:149: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:83: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:264: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:276: .from("addresses")
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:283: .from("addresses")
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:373: requestAddressIds.length ? supabase.from("addresses").select("id, label, street, number, neighborhood, city, state").in("id", requestAddressIds) : Promise.resolve({ data: [] }),
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:409: .from("addresses")
+C:\VemGO\vemgo\app\login\page.tsx:56: .from("addresses")
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:325: supabase.from("addresses").select("*").eq("id", typedOrder.address_id).maybeSingle(),
+C:\VemGO\vemgo\supabase\schema.sql:1529: "latitude" double precision,
+C:\VemGO\vemgo\supabase\schema.sql:1530: "longitude" double precision,

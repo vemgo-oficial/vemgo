@@ -1,0 +1,3 @@
+﻿C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:239: const { error: bookingError } = await supabase.rpc("request_appointment_slot", {
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:490: const { data, error: actionError } = await supabase.rpc("client_submit_appointment_outcome", {
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:451: const { data, error: rpcError } = await supabase.rpc("respond_to_appointment_request", {

@@ -1,0 +1,454 @@
+﻿C:\VemGO\vemgo\app\page.tsx:546: Imagens ilustrativas. A disponibilidade depende da implantação
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:85: .from("professional_services")
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:190: .from("professional_services")
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:206: .from("professional_services")
+C:\VemGO\vemgo\app\cadastro-profissional\plano\page.tsx:12: export default function CadastroProfissionalPlanoPage() {
+C:\VemGO\vemgo\app\cadastro-profissional\plano\page.tsx:109: Seu plano
+C:\VemGO\vemgo\app\cadastro-profissional\plano\page.tsx:120: PLANO MVP
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:84: .from("professional_services")
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:96: .from("service_prices")
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:271: .from("service_prices")
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:295: .from("service_prices")
+C:\VemGO\vemgo\app\cliente\page.tsx:308: const [notificationsOpen, setNotificationsOpen] = useState(false);
+C:\VemGO\vemgo\app\cliente\page.tsx:596: setNotificationsOpen(false);
+C:\VemGO\vemgo\app\cliente\page.tsx:1002: router.push(`/cliente/agendamento/${request.id}`);
+C:\VemGO\vemgo\app\cliente\page.tsx:1127: onClick={() => goTo("/cliente/recurso-indisponivel/vemgo-pay")}
+C:\VemGO\vemgo\app\cliente\page.tsx:1128: aria-label="Ver informações do VemGO Pay"
+C:\VemGO\vemgo\app\cliente\page.tsx:1129: title="VemGO Pay — integração indisponível nesta versão local"
+C:\VemGO\vemgo\app\cliente\page.tsx:1134: <span className="block text-xs font-bold text-white">VemGO Pay</span>
+C:\VemGO\vemgo\app\cliente\page.tsx:1145: onClick={() => setNotificationsOpen((open) => !open)}
+C:\VemGO\vemgo\app\cliente\page.tsx:1149: aria-expanded={notificationsOpen}
+C:\VemGO\vemgo\app\cliente\page.tsx:1167: {notificationsOpen && (
+C:\VemGO\vemgo\app\cliente\page.tsx:1179: onClick={() => setNotificationsOpen(false)}
+C:\VemGO\vemgo\app\cliente\page.tsx:1659: {/* BANNER CLUBE VEMGO+ */}
+C:\VemGO\vemgo\app\cliente\page.tsx:1668: <h2 className="mt-2 text-2xl font-bold leading-tight sm:text-3xl">Conheça o <span className="text-emerald-400">Clube VemGO+</span></h2>
+C:\VemGO\vemgo\app\cliente\page.tsx:1672: <button type="button" onClick={() => goTo("/cliente/recurso-indisponivel/clube-vemgo")} className="inline-flex min-h-11 items-center justify-center gap-3 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-5 py-3 text-sm font-bold text-emerald-300 transition hover:bg-emerald-400 hover:text-black">
+C:\VemGO\vemgo\app\cliente\page.tsx:1846: goTo(`/cliente/agendamento/${request.id}`)
+C:\VemGO\vemgo\app\cliente\page.tsx:1870: ? "Agendamento confirmado"
+C:\VemGO\vemgo\app\cliente\page.tsx:1900: {/* BANNER VEMGO PAY */}
+C:\VemGO\vemgo\app\cliente\page.tsx:1914: Conheça o <span className="text-emerald-400">VemGO Pay</span>
+C:\VemGO\vemgo\app\cliente\page.tsx:1918: Consulte o estado da integração VemGO Pay nesta versão local.
+C:\VemGO\vemgo\app\cliente\page.tsx:1921: Consulta de saldo e transações estará disponível quando a carteira for ativada.
+C:\VemGO\vemgo\app\cliente\page.tsx:1927: onClick={() => goTo("/cliente/recurso-indisponivel/vemgo-pay")}
+C:\VemGO\vemgo\app\cliente\page.tsx:1930: Ver informações do VemGO Pay <Icon name="arrow" size={18} />
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:25: type Appointment = {
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:68: function ClienteAgendamentoContent() {
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:78: const [appointments, setAppointments] = useState<Appointment[]>([]);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:95: setAppointments([]);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:99: setError("Pedido não informado. Abra o agendamento a partir de Meus serviços.");
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:105: router.replace(`/login?redirect=/cliente/agendamento?orderId=${orderId}`);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:133: { data: appointmentData, error: appointmentError },
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:143: supabase.from("appointments")
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:149: if (serviceError || professionalError || availabilityError || appointmentError) {
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:159: setAppointments((appointmentData ?? []) as Appointment[]);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:161: setError("Não foi possível carregar os dados do agendamento. Tente novamente.");
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:202: const collides = appointments.some((appointment) => {
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:203: const existingStart = new Date(appointment.starts_at).getTime();
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:204: const existingEnd = new Date(appointment.ends_at).getTime();
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:216: }, [selectedDate, availability, appointments]);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:218: async function confirmAppointment() {
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:239: const { error: bookingError } = await supabase.rpc("request_appointment_slot", {
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:252: router.push(`/cliente/agendamento/${order.id}`);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:278: AGENDAMENTO
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:330: <button disabled={!selectedStart || saving} onClick={() => void confirmAppointment()}
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:332: {saving ? "Confirmando horário..." : "Confirmar agendamento"}
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:342: export default function ClienteAgendamentoPage() {
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:347: <p className="text-sm text-zinc-400">Carregando agendamento...</p>
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:351: <ClienteAgendamentoContent />
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:7: import { canClientCancelRequest, getClientAppointmentActions, getClientAppointmentState } from "@/lib/client-appointment-status";
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:9: type Appointment = {
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:108: scheduled: { title: "Agendamento registrado", description: "A solicitação avançou para a etapa de agendamento." },
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:116: function appointmentStatus(appointment: Appointment, orderStatus: string, now: number | null) {
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:117: const state = getClientAppointmentState(appointment, orderStatus, now);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:128: title: "Agendamento confirmado",
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:134: title: appointment.client_outcome === "cancelled_by_client" ? "Atendimento cancelado por você" : "Horário recusado ou cancelado",
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:135: description: appointment.client_outcome === "cancelled_by_client"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:155: description: appointment.client_outcome === "problem_reported"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:157: : appointment.client_outcome === "satisfied"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:177: description: appointment.status === "scheduled"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:185: description: appointment.status === "scheduled"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:192: title: "Status do agendamento: " + appointment.status,
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:199: export default function ClienteAgendamentoPage() {
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:211: const [appointment, setAppointment] = useState<Appointment | null>(null);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:212: const [appointmentLifecycleAvailable, setAppointmentLifecycleAvailable] = useState(false);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:243: router.replace(`/login?redirect=/cliente/agendamento/${recordId}`);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:267: "client_appointment_lifecycle_available",
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:393: setAppointment(null);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:394: setAppointmentLifecycleAvailable(lifecycleAvailable);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:404: appointmentResult,
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:418: .from("appointments")
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:434: if (appointmentResult.error) {
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:435: console.error("[VemGO] Erro ao carregar agendamento:", appointmentResult.error.message);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:436: setError("A solicitação foi carregada, mas não foi possível consultar o agendamento. Tente atualizar.");
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:439: let appointmentData = (appointmentResult.data as Omit<Appointment, "client_outcome" | "client_outcome_note" | "client_reported_at"> | null) ?? null;
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:441: if (appointmentData && !appointmentResult.error) {
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:443: .from("appointments")
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:445: .eq("id", appointmentData.id)
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:450: appointmentData = { ...appointmentData, ...outcomeData } as Appointment;
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:457: setAppointment(appointmentData as Appointment | null);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:458: setAppointmentLifecycleAvailable(outcomeAvailable);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:480: if (!appointment || !clientAction || clientActionBusy) return;
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:490: const { data, error: actionError } = await supabase.rpc("client_submit_appointment_outcome", {
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:491: p_appointment_id: appointment.id,
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:505: setAppointment(data as Appointment);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:585: const status = appointment && order
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:586: ? appointmentStatus(appointment, order.status, now)
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:589: const canCancelRequest = appointmentLifecycleAvailable && canClientCancelRequest(request?.status, !!order);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:590: const requestCancellationPending = !appointmentLifecycleAvailable && canClientCancelRequest(request?.status, !!order);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:591: const availableActions = appointmentLifecycleAvailable
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:592: ? getClientAppointmentActions(appointment, order?.status ?? request?.status, now)
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:629: appointment?.created_at ? { label: "Horário solicitado", at: appointment.created_at } : null,
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:630: appointment?.confirmed_at ? { label: "Horário confirmado", at: appointment.confirmed_at } : null,
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:631: appointment?.cancelled_at ? { label: "Horário cancelado", at: appointment.cancelled_at } : null,
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:634: appointment?.client_reported_at
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:636: label: appointment.client_outcome === "no_show_reported"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:638: : appointment.client_outcome === "problem_reported"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:640: : appointment.client_outcome === "satisfied"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:643: at: appointment.client_reported_at,
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:667: Acompanhe o andamento da solicitação, o agendamento e o resultado do atendimento.
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:714: {appointment && order ? (
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:720: {formatDateTime(appointment.starts_at)}
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:723: {formatTime(appointment.starts_at)} às {formatTime(appointment.ends_at)}
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:729: {appointment.status === "cancelled" && appointment.cancellation_reason && (
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:731: Motivo: {appointment.cancellation_reason}
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:737: {!appointmentLifecycleAvailable && <p role="status" className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/[0.06] p-3 text-sm leading-6 text-amber-100">As ações de cancelamento, não comparecimento e resultado ainda não estão disponíveis neste ambiente. Nenhuma decisão será enviada até que a migração local de ciclo de atendimento seja instalada.</p>}
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:738: {["cancelled", "rejected"].includes(appointment.status) && appointment.client_outcome !== "cancelled_by_client" && (
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:740: href={`/cliente/agendamento?orderId=${order.id}`}
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:747: <section aria-labelledby="client-appointment-actions" className="mt-6 border-t border-zinc-800 pt-5">
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:748: <h3 id="client-appointment-actions" className="text-sm font-semibold text-white">Ações do atendimento</h3>
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:765: <div><dt className="text-xs text-zinc-500">Horário</dt><dd className="mt-1 font-medium text-zinc-100">{formatDateTime(appointment.starts_at)} · {formatTime(appointment.starts_at)}–{formatTime(appointment.ends_at)}</dd></div>
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:770: <label htmlFor="client-appointment-problem" className="text-sm font-medium text-zinc-200">Descreva o que aconteceu</label>
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:771: <textarea id="client-appointment-problem" value={clientActionNote} onChange={(event) => setClientActionNote(event.target.value)} maxLength={2000} rows={4} className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2.5 text-sm text-white outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20" placeholder="Conte brevemente o problema encontrado." />
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:790: Este pedido ainda não tem um agendamento registrado.
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:793: href={`/cliente/agendamento?orderId=${order.id}`}
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:11: import { getClientAppointmentState } from "@/lib/client-appointment-status";
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:42: type Appointment = {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:56: appointment?: Appointment;
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:121: const { order, appointment } = item;
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:122: const appointmentState = getClientAppointmentState(appointment, order.status, now);
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:124: if (appointmentState === "cancelled" || appointmentState === "rejected") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:127: label: appointmentState === "rejected" ? "Recusado" : "Cancelado",
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:128: description: appointmentState === "rejected"
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:136: if (appointmentState === "completed") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:148: if (appointmentState === "in_progress") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:158: if (appointmentState === "regularization" || appointmentState === "started_unreported") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:161: label: appointmentState === "started_unreported"
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:164: description: appointmentState === "started_unreported"
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:165: ? appointment?.status === "scheduled"
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:168: : appointment?.status === "scheduled"
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:175: if (appointmentState === "no_show") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:184: if (appointmentState === "disputed") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:193: if (appointment && appointmentState === "confirmed") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:197: description: `${formatDate(appointment.starts_at)} às ${formatTime(appointment.starts_at)}`,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:203: if (appointment && appointmentState === "scheduled") {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:207: description: `Horário solicitado em ${formatDateTime(appointment.starts_at)}`,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:219: label: "Aguardando agendamento",
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:246: scheduled: { key: "scheduled", label: "Agendamento registrado", description: "A solicitação avançou para o agendamento.", className: "border-blue-500/40 bg-blue-500/10 text-blue-400" },
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:258: return "Aguardando agendamento";
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:274: function hasActiveAppointment(appointment?: Appointment) {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:276: !!appointment &&
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:278: appointment.status,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:401: appointmentResult,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:416: .from("appointments")
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:423: const appointmentResultFallback = appointmentResult.error
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:425: .from("appointments")
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:429: : appointmentResult;
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:430: const appointmentData = appointmentResultFallback.data;
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:431: const appointmentError = appointmentResultFallback.error;
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:433: if (serviceError || addressError || appointmentError) {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:437: appointments: appointmentError?.message,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:447: const appointmentMap: Record<string, Appointment> = {};
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:458: // Mantemos o agendamento mais recente de cada pedido.
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:459: for (const appointment of appointmentData ?? []) {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:460: if (!appointmentMap[appointment.order_id]) {
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:461: appointmentMap[appointment.order_id] = appointment;
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:470: appointment: appointmentMap[order.id],
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:533: Acompanhe seus pedidos, agendamentos e histórico de
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:591: Agendamentos
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:675: Seus pedidos, agendamentos e serviços realizados
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:703: <button type="button" onClick={() => router.push(`/cliente/agendamento/${request.id}`)} className="w-full rounded-xl border border-green-500/50 px-5 py-3 text-sm font-semibold text-green-400 transition hover:bg-green-500 hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400">Acompanhar →</button>
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:710: const { order, service, address, appointment } = item;
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:712: const activeAppointment =
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:713: hasActiveAppointment(appointment);
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:717: !activeAppointment &&
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:718: appointment?.status !== "no_show";
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:776: {appointment &&
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:778: appointment.status,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:781: {formatDate(appointment.starts_at)} às{" "}
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:782: {formatTime(appointment.starts_at)}
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:793: `/cliente/agendamento?orderId=${order.id}`,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:800: ) : appointment?.status === "scheduled" ? (
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:805: `/cliente/agendamento/${order.id}`,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:810: Ver agendamento →
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:812: ) : appointment?.status === "confirmed" ? (
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:817: `/cliente/agendamento/${order.id}`,
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:822: Ver agendamento →
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:829: `/cliente/agendamento/${order.id}`,
+C:\VemGO\vemgo\app\controle\page.tsx:97: type AppointmentOutcomeReview = {
+C:\VemGO\vemgo\app\controle\page.tsx:99: appointment_id: string;
+C:\VemGO\vemgo\app\controle\page.tsx:105: appointment_status: string;
+C:\VemGO\vemgo\app\controle\page.tsx:200: const [appointmentOutcomeReviews, setAppointmentOutcomeReviews] = useState<AppointmentOutcomeReview[] | null>(null);
+C:\VemGO\vemgo\app\controle\page.tsx:201: const [loadingAppointmentOutcomeReviews, setLoadingAppointmentOutcomeReviews] = useState(false);
+C:\VemGO\vemgo\app\controle\page.tsx:202: const [appointmentOutcomeReviewError, setAppointmentOutcomeReviewError] = useState("");
+C:\VemGO\vemgo\app\controle\page.tsx:1523: <section aria-labelledby="appointment-outcome-review-title" className="mx-auto max-w-[1600px] px-4 pb-6 sm:px-6 lg:px-8">
+C:\VemGO\vemgo\app\controle\page.tsx:1528: <h2 id="appointment-outcome-review-title" className="mt-1 text-base font-semibold text-white">Relatos que precisam de revisão</h2>
+C:\VemGO\vemgo\app\controle\page.tsx:1534: setLoadingAppointmentOutcomeReviews(true);
+C:\VemGO\vemgo\app\controle\page.tsx:1535: setAppointmentOutcomeReviewError("");
+C:\VemGO\vemgo\app\controle\page.tsx:1538: const { data, error: reviewError } = await supabase.rpc("admin_get_appointment_outcome_reviews");
+C:\VemGO\vemgo\app\controle\page.tsx:1540: setAppointmentOutcomeReviews((data ?? []) as AppointmentOutcomeReview[]);
+C:\VemGO\vemgo\app\controle\page.tsx:1542: setAppointmentOutcomeReviewError(reviewError instanceof Error ? reviewError.message : "Não foi possível carregar os relatos para revisão.");
+C:\VemGO\vemgo\app\controle\page.tsx:1544: setLoadingAppointmentOutcomeReviews(false);
+C:\VemGO\vemgo\app\controle\page.tsx:1547: disabled={loadingAppointmentOutcomeReviews}
+C:\VemGO\vemgo\app\controle\page.tsx:1550: {loadingAppointmentOutcomeReviews ? "Carregando…" : appointmentOutcomeReviews ? "Atualizar relatos" : "Carregar relatos"}
+C:\VemGO\vemgo\app\controle\page.tsx:1553: {appointmentOutcomeReviewError && <p role="alert" className="mt-4 rounded-lg border border-red-500/20 bg-red-950/20 p-3 text-sm text-red-200">Não foi possível carregar os relatos. Confirme se a migração de ciclo de atendimento foi aplicada. Detalhe: {appointmentOutcomeReviewError}</p>}
+C:\VemGO\vemgo\app\controle\page.tsx:1554: {appointmentOutcomeReviews && (
+C:\VemGO\vemgo\app\controle\page.tsx:1555: appointmentOutcomeReviews.length === 0
+C:\VemGO\vemgo\app\controle\page.tsx:1557: : <div className="mt-4 space-y-3">{appointmentOutcomeReviews.map((review) => (
+C:\VemGO\vemgo\app\controle\page.tsx:1558: <article key={review.appointment_id} className="rounded-xl border border-zinc-800 bg-black/20 p-4">
+C:\VemGO\vemgo\app\login\page.tsx:149: .from("professional_services")
+C:\VemGO\vemgo\app\login\page.tsx:177: .from("service_prices")
+C:\VemGO\vemgo\app\login\page.tsx:265: return "/cadastro-profissional/plano";
+C:\VemGO\vemgo\app\privacidade\page.tsx:87: <li>agendamentos e comunicação relacionada aos serviços;</li>
+C:\VemGO\vemgo\app\profissional\page.tsx:14: type Appointment = {
+C:\VemGO\vemgo\app\profissional\page.tsx:112: const [appointments, setAppointments] = useState<Appointment[]>([]);
+C:\VemGO\vemgo\app\profissional\page.tsx:125: const plansSectionRef = useRef<HTMLElement | null>(null);
+C:\VemGO\vemgo\app\profissional\page.tsx:126: const [plansAnimationStarted, setPlansAnimationStarted] = useState(false);
+C:\VemGO\vemgo\app\profissional\page.tsx:127: const [activePlan, setActivePlan] = useState("Bronze");
+C:\VemGO\vemgo\app\profissional\page.tsx:128: const [notificationsOpen, setNotificationsOpen] = useState(false);
+C:\VemGO\vemgo\app\profissional\page.tsx:134: setPlansAnimationStarted(true);
+C:\VemGO\vemgo\app\profissional\page.tsx:232: { data: appointmentData, error: appointmentError },
+C:\VemGO\vemgo\app\profissional\page.tsx:243: .from("appointments")
+C:\VemGO\vemgo\app\profissional\page.tsx:256: if (appointmentError) {
+C:\VemGO\vemgo\app\profissional\page.tsx:258: `Não foi possível carregar seus agendamentos: ${appointmentError.message}`,
+C:\VemGO\vemgo\app\profissional\page.tsx:294: const appointmentRows = (appointmentData ?? []) as Appointment[];
+C:\VemGO\vemgo\app\profissional\page.tsx:295: setAppointments(appointmentRows);
+C:\VemGO\vemgo\app\profissional\page.tsx:298: new Set(appointmentRows.map((item) => item.order_id)),
+C:\VemGO\vemgo\app\profissional\page.tsx:372: const pendingAppointmentCount = appointments.filter(
+C:\VemGO\vemgo\app\profissional\page.tsx:373: (appointment) => appointment.status === "scheduled",
+C:\VemGO\vemgo\app\profissional\page.tsx:376: const upcomingAppointments = appointments.filter(
+C:\VemGO\vemgo\app\profissional\page.tsx:377: (appointment) =>
+C:\VemGO\vemgo\app\profissional\page.tsx:378: appointment.status === "confirmed" ||
+C:\VemGO\vemgo\app\profissional\page.tsx:379: appointment.status === "in_progress",
+C:\VemGO\vemgo\app\profissional\page.tsx:382: const historyAppointments = appointments.filter(
+C:\VemGO\vemgo\app\profissional\page.tsx:383: (appointment) =>
+C:\VemGO\vemgo\app\profissional\page.tsx:384: appointment.status === "completed" ||
+C:\VemGO\vemgo\app\profissional\page.tsx:385: appointment.status === "cancelled" ||
+C:\VemGO\vemgo\app\profissional\page.tsx:386: appointment.status === "no_show",
+C:\VemGO\vemgo\app\profissional\page.tsx:537: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/vemgo-pay")} aria-label="Abrir informações do VemGO Pay" title="VemGO Pay" className="hidden shrink-0 items-center gap-2 rounded-xl border border-orange-500/25 bg-orange-500/[0.07] px-3 py-2 text-left transition hover:border-orange-400/50 sm:flex">
+C:\VemGO\vemgo\app\profissional\page.tsx:539: <span><span className="block text-xs font-bold text-white">VemGO Pay</span><span className="block text-[10px] text-zinc-400">Recebimentos</span></span>
+C:\VemGO\vemgo\app\profissional\page.tsx:542: <button type="button" onClick={() => setNotificationsOpen((open) => !open)} aria-label="Notificações" aria-expanded={notificationsOpen} className="relative flex h-10 w-10 items-center justify-center rounded-xl text-zinc-300 transition hover:bg-white/5 hover:text-orange-400">
+C:\VemGO\vemgo\app\profissional\page.tsx:546: {notificationsOpen && <div className="absolute right-0 top-12 z-[70] w-[min(300px,calc(100vw-32px))] rounded-2xl border border-white/10 bg-[#111512] p-4 shadow-2xl"><div className="flex items-center justify-between"><h3 className="font-semibold">Notificações</h3><button type="button" onClick={() => setNotificationsOpen(false)} aria-label="Fechar notificações" className="text-zinc-500 hover:text-white">×</button></div><p className="mt-3 text-sm leading-6 text-zinc-400">{opportunityCount > 0 ? `Você tem ${opportunityCount} oportunidade(s) compatíveis.` : "Suas atualizações aparecerão aqui quando houver novidades."}</p><button type="button" onClick={() => { setNotificationsOpen(false); router.push("/profissional/oportunidades"); }} className="mt-3 text-sm font-semibold text-orange-400 hover:text-orange-300">Ver oportunidades →</button></div>}
+C:\VemGO\vemgo\app\profissional\page.tsx:585: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="inline-flex items-center justify-center gap-3 rounded-xl bg-orange-500 px-5 py-3 font-bold text-black shadow-lg shadow-orange-950/30 transition hover:bg-orange-400">
+C:\VemGO\vemgo\app\profissional\page.tsx:622: <section ref={plansSectionRef} className={`mt-8 overflow-hidden rounded-3xl border border-white/10 bg-[#0e0e0e] p-6 sm:p-8 ${plansAnimationStarted ? "plans-visible" : "plans-not-yet-visible"}`}>
+C:\VemGO\vemgo\app\profissional\page.tsx:626: <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">Planos VemGO para profissionais</h2>
+C:\VemGO\vemgo\app\profissional\page.tsx:629: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/planos")} className="mt-3 inline-flex shrink-0 items-center gap-2 text-sm font-bold text-orange-400 hover:text-orange-300 sm:mt-0">Conhecer planos →</button>
+C:\VemGO\vemgo\app\profissional\page.tsx:634: .plans-not-yet-visible .vemgo-plan-stack-card { opacity: 0; }
+C:\VemGO\vemgo\app\profissional\page.tsx:635: .plans-visible .vemgo-plan-stack-card { animation: vemgoStackEnter 650ms cubic-bezier(.2,.75,.25,1) both; }
+C:\VemGO\vemgo\app\profissional\page.tsx:636: .plans-visible .vemgo-plan-stack-card:nth-child(1) { animation-delay: 100ms; }
+C:\VemGO\vemgo\app\profissional\page.tsx:637: .plans-visible .vemgo-plan-stack-card:nth-child(2) { animation-delay: 300ms; }
+C:\VemGO\vemgo\app\profissional\page.tsx:638: .plans-visible .vemgo-plan-stack-card:nth-child(3) { animation-delay: 500ms; }
+C:\VemGO\vemgo\app\profissional\page.tsx:639: .plans-visible .vemgo-plan-details { animation: vemgoStackReveal 450ms ease-out both; }
+C:\VemGO\vemgo\app\profissional\page.tsx:640: @media (prefers-reduced-motion: reduce) { .plans-visible .vemgo-plan-stack-card, .plans-visible .vemgo-plan-details { animation: none; opacity: 1; transform: none; } }
+C:\VemGO\vemgo\app\profissional\page.tsx:643: const plans = [
+C:\VemGO\vemgo\app\profissional\page.tsx:648: const selected = plans.find((plan) => plan.name === activePlan) ?? plans[0];
+C:\VemGO\vemgo\app\profissional\page.tsx:649: const inactive = plans.filter((plan) => plan.name !== selected.name);
+C:\VemGO\vemgo\app\profissional\page.tsx:653: <div key={selected.name} className="vemgo-plan-details min-w-0" aria-live="polite">
+C:\VemGO\vemgo\app\profissional\page.tsx:655: <h3 className="mt-3 text-3xl font-black text-white sm:text-4xl">Plano {selected.name}</h3>
+C:\VemGO\vemgo\app\profissional\page.tsx:657: <p className="mt-5 text-sm leading-6 text-zinc-500">Selecione outra carta para conhecer esse plano.</p>
+C:\VemGO\vemgo\app\profissional\page.tsx:658: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/planos")} className={`mt-6 inline-flex items-center gap-2 rounded-xl border ${selected.border} bg-white/[0.03] px-5 py-3 text-sm font-bold ${selected.accent} transition hover:bg-white/[0.07]`}>Conhecer plano {selected.name} <span aria-hidden="true">→</span></button>
+C:\VemGO\vemgo\app\profissional\page.tsx:660: <div className="relative mx-auto h-[330px] w-full max-w-[390px] sm:h-[360px]" aria-label="Cartas dos planos VemGO; selecione uma carta para trazê-la para frente">
+C:\VemGO\vemgo\app\profissional\page.tsx:661: {visibleCards.map((plan) => {
+C:\VemGO\vemgo\app\profissional\page.tsx:662: const isActive = plan.name === selected.name;
+C:\VemGO\vemgo\app\profissional\page.tsx:663: const inactiveIndex = inactive.findIndex((item) => item.name === plan.name);
+C:\VemGO\vemgo\app\profissional\page.tsx:668: key={plan.name}
+C:\VemGO\vemgo\app\profissional\page.tsx:670: onClick={() => setActivePlan(plan.name)}
+C:\VemGO\vemgo\app\profissional\page.tsx:672: aria-label={`Selecionar plano ${plan.name}`}
+C:\VemGO\vemgo\app\profissional\page.tsx:673: title={isActive ? `Plano ${plan.name} selecionado` : `Trazer plano ${plan.name} para frente`}
+C:\VemGO\vemgo\app\profissional\page.tsx:674: className={`vemgo-plan-stack-card absolute top-0 h-[310px] w-[min(72%,270px)] overflow-hidden rounded-[22px] border-2 bg-[#111111] text-left shadow-2xl transition-[left,transform,box-shadow,border-color] duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 sm:h-[340px] ${plan.border} ${isActive ? "cursor-default" : "cursor-pointer hover:-translate-y-1"}`}
+C:\VemGO\vemgo\app\profissional\page.tsx:675: style={{ left: `${left}px`, zIndex, borderColor: plan.frame, transform: isActive ? "translateX(0) rotate(0deg) scale(1)" : `rotate(${inactiveIndex === 0 ? -5 : -2}deg) scale(${inactiveIndex === 0 ? 0.94 : 0.97})`, transformOrigin: "bottom center" }}
+C:\VemGO\vemgo\app\profissional\page.tsx:679: <Image src="/images/profissional-vemgo-card.png" alt={`Profissional VemGO — Plano ${plan.name}`} fill unoptimized sizes="(max-width: 640px) 70vw, 270px" className="object-cover object-[center_30%]" />
+C:\VemGO\vemgo\app\profissional\page.tsx:682: <span className={`absolute bottom-5 left-5 rounded-full border bg-black/85 px-3 py-1 text-[11px] font-extrabold tracking-[0.18em] ${plan.border} ${plan.accent}`}>{plan.badge}</span>
+C:\VemGO\vemgo\app\profissional\page.tsx:691: <p className="mt-5 text-xs leading-5 text-zinc-500">Os planos e benefícios são apresentados como proposta visual; os detalhes comerciais serão confirmados antes de qualquer contratação.</p>
+C:\VemGO\vemgo\app\profissional\page.tsx:701: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="group rounded-2xl border border-white/10 bg-[#111111] p-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40">
+C:\VemGO\vemgo\app\profissional\page.tsx:704: <p className="mt-1 text-3xl font-black text-white">{upcomingAppointments.length}</p>
+C:\VemGO\vemgo\app\profissional\page.tsx:705: <p className="mt-2 text-xs leading-5 text-zinc-500">{pendingAppointmentCount} agendado(s) · serviços confirmados ou em andamento</p>
+C:\VemGO\vemgo\app\profissional\page.tsx:707: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="group rounded-2xl border border-white/10 bg-[#111111] p-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40">
+C:\VemGO\vemgo\app\profissional\page.tsx:710: <p className="mt-1 text-3xl font-black text-white">{historyAppointments.length}</p>
+C:\VemGO\vemgo\app\profissional\page.tsx:726: <h2 className="mt-2 text-2xl font-bold text-white">Próximos agendamentos</h2>
+C:\VemGO\vemgo\app\profissional\page.tsx:729: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="shrink-0 text-sm font-semibold text-orange-400 hover:text-orange-300">Ver todos →</button>
+C:\VemGO\vemgo\app\profissional\page.tsx:731: {upcomingAppointments.length === 0 ? (
+C:\VemGO\vemgo\app\profissional\page.tsx:734: <h3 className="mt-4 font-semibold text-white">Nenhum agendamento próximo</h3>
+C:\VemGO\vemgo\app\profissional\page.tsx:740: {upcomingAppointments.slice(0, 5).map((appointment) => {
+C:\VemGO\vemgo\app\profissional\page.tsx:741: const order = orders[appointment.order_id];
+C:\VemGO\vemgo\app\profissional\page.tsx:744: <button key={appointment.id} type="button" onClick={() => router.push(`/profissional/agendamento/${appointment.order_id}`)} className="w-full rounded-2xl border border-white/10 bg-[#111111] p-4 text-left transition hover:border-orange-400/40 sm:p-5">
+C:\VemGO\vemgo\app\profissional\page.tsx:749: <p className="mt-3 text-sm text-zinc-400">{formatDate(appointment.starts_at)} · {formatTime(appointment.starts_at)} às {formatTime(appointment.ends_at)}</p>
+C:\VemGO\vemgo\app\profissional\page.tsx:752: <span className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${statusClass(appointment.status)}`}>{statusLabel(appointment.status)}</span>
+C:\VemGO\vemgo\app\profissional\page.tsx:779: <div className="flex items-start gap-4"><span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-xl font-bold text-orange-300">$</span><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">Recebimentos na VemGO</p><h2 className="mt-2 text-2xl font-bold text-white">Conheça o VemGO Pay</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-400">Acompanhe as informações sobre seus recebimentos e a movimentação financeira pela plataforma.</p></div></div>
+C:\VemGO\vemgo\app\profissional\page.tsx:780: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/vemgo-pay")} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-orange-400/30 px-5 py-3 text-sm font-bold text-orange-300 transition hover:bg-orange-400/10">Ver informações do VemGO Pay →</button>
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:19: type AppointmentStatus =
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:35: type Appointment = {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:47: status: AppointmentStatus;
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:137: function statusLabel(status: AppointmentStatus) {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:187: function statusClass(status: AppointmentStatus) {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:237: function AppointmentCard({
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:239: appointment,
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:249: appointment: Appointment;
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:277: `/profissional/agendamento/${appointment.order_id}`,
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:353: {formatDate(appointment.starts_at)}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:361: {formatTime(appointment.starts_at)} às{" "}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:363: {formatTime(appointment.ends_at)}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:379: appointment.status,
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:385: {statusLabel(appointment.status)}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:451: export default function ProfessionalAppointmentsPage() {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:460: const [appointments, setAppointments] = useState<Appointment[]>(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:590: data: appointmentData,
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:592: error: appointmentError,
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:596: .from("appointments")
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:614: if (appointmentError) {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:618: `Não foi possível carregar os agendamentos: ${appointmentError.message}`,
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:630: const appointmentRows =
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:632: (appointmentData || []) as Appointment[];
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:636: setAppointments(appointmentRows);
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:644: appointmentRows.map(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:646: (appointment) => appointment.order_id,
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:810: const pendingAppointments = useMemo(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:814: appointments.filter(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:816: (appointment) => appointment.status === "scheduled",
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:820: [appointments],
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:826: const confirmedAppointments = useMemo(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:830: appointments.filter(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:832: (appointment) => appointment.status === "confirmed",
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:836: [appointments],
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:842: const otherAppointments = useMemo(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:846: appointments.filter(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:848: (appointment) =>
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:850: appointment.status !== "scheduled" &&
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:852: appointment.status !== "confirmed",
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:856: [appointments],
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:872: Carregando agendamentos...
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:976: Agendamento
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1006: {pendingAppointments.length > 0 && (
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1034: {pendingAppointments.map((appointment) => {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1036: const order = orders[appointment.order_id];
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1050: <AppointmentCard
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1052: key={appointment.id}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1054: appointment={appointment}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1076: {confirmedAppointments.length > 0 && (
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1084: Agendamentos confirmados
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1102: {confirmedAppointments.map((appointment) => {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1104: const order = orders[appointment.order_id];
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1118: <AppointmentCard
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1120: key={appointment.id}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1122: appointment={appointment}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1142: {otherAppointments.length > 0 && (
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1158: Agendamentos concluídos ou encerrados.
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1168: {otherAppointments.map((appointment) => {
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1170: const order = orders[appointment.order_id];
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1184: <AppointmentCard
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1186: key={appointment.id}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1188: appointment={appointment}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1208: {appointments.length === 0 && (
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:1222: Nenhum agendamento
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:77: type Appointment = {
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:193: export default function ProfessionalAppointmentDetailPage() {
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:205: const [appointment, setAppointment] = useState<Appointment | null>(null);
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:389: const { data: appointmentData, error: appointmentError } = await supabase
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:391: .from("appointments")
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:407: if (appointmentError) throw appointmentError;
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:409: setAppointment((appointmentData as Appointment | null) ?? null);
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:427: if (!appointment || processing) return;
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:451: const { data, error: rpcError } = await supabase.rpc("respond_to_appointment_request", {
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:453: p_appointment_id: appointment.id,
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:461: setAppointment(data as Appointment);
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:467: ? "Chamado aceito! O agendamento foi confirmado e o cliente será informado."
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:475: window.setTimeout(() => router.push("/profissional/agendamento"), 1200);
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:506: onClick={() => router.push("/profissional/agendamento")}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:509: Voltar para agendamentos
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:542: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="flex items-center" aria-label="Voltar para agendamentos">
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:552: onClick={() => router.push("/profissional/agendamento")}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:596: {appointment?.status === "scheduled" ? "Aguardando sua resposta" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:598: appointment?.status === "confirmed" ? "Chamado aceito" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:600: appointment?.status === "in_progress" ? "Atendimento em andamento" : "Chamado"}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:620: {!appointment ? (
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:626: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="mt-6 rounded-xl bg-orange-500 px-6 py-4 font-semibold text-black hover:bg-orange-400">
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:628: Voltar para agendamentos
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:644: {appointment.status === "scheduled" ? "Aguardando sua resposta" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:646: appointment.status === "confirmed" ? "Chamado aceito" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:648: appointment.status === "in_progress" ? "Atendimento em andamento" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:649: appointment.status === "no_show" ? "Relato de não comparecimento para revisão" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:650: appointment.status === "cancelled" ? "Agendamento cancelado" : "Atendimento encerrado"}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:656: {appointment.client_outcome && (
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:659: {appointment.client_outcome === "satisfied" ? "Cliente confirmou que deu tudo certo" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:660: appointment.client_outcome === "problem_reported" ? "Cliente relatou um problema — revisão necessária" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:661: appointment.client_outcome === "no_show_reported" ? "Cliente relatou não comparecimento — revisão necessária" :
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:662: "Cliente cancelou o agendamento"}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:664: {appointment.client_outcome_note && <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">{appointment.client_outcome_note}</p>}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:665: {appointment.client_reported_at && <p className="mt-2 text-xs text-zinc-500">Registrado em {new Date(appointment.client_reported_at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}</p>}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:737: <p className="mt-3 text-xl font-semibold capitalize text-white">{formatDateTime(appointment.starts_at)}</p>
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:739: <p className="mt-2 text-sm text-zinc-400">{formatTime(appointment.starts_at)} às {formatTime(appointment.ends_at)}</p>
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:743: {appointment.status === "scheduled" && !finished && (
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:793: {appointment.status === "confirmed" && (
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:799: <p className="mt-2 text-sm leading-6 text-orange-200/80">O agendamento foi confirmado e o cliente será informado.</p>
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:809: <p className="font-semibold text-orange-400">{appointment.status === "confirmed" ? "Chamado aceito." : "Chamado recusado."}</p>
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:811: <p className="mt-2 text-sm text-orange-200/80">Voltando para seus agendamentos...</p>
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:844: `/profissional/agendamento/${orderId}`,
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:167: .from("professional_services")
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:205: .from("service_prices")
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:391: .from("service_prices")
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:425: const { error: insertError } = await supabase.from("service_prices").insert(rows);
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:245: .from("professional_services")
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:365: .from("professional_services")
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:393: .from("professional_services")
+C:\VemGO\vemgo\app\termos\page.tsx:41: solicitação de serviços, comunicação, agendamento,
+C:\VemGO\vemgo\app\termos\page.tsx:110: 5. Solicitações e agendamentos
+C:\VemGO\vemgo\app\termos\page.tsx:120: Após a confirmação de uma contratação ou agendamento, as partes
+C:\VemGO\vemgo\app\termos-profissional\page.tsx:166: agendamento confirmado.
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:18: "vemgo-pay": {
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:19: title: "VemGO Pay",
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:21: "A integração de pagamentos e carteira não está disponível nesta versão local. Não há saldo ou movimentações financeiras para consultar.",
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:23: "clube-vemgo": {
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:24: title: "Clube VemGO+",
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:35: "vemgo-pay": {
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:36: title: "VemGO Pay",
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:40: planos: {
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:41: title: "Planos VemGO",
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:43: "Os cartões exibidos no painel são apenas uma apresentação visual. Não há plano habilitado para contratação nem condições comerciais confirmadas nesta versão local.",
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:26: { label: "Agendamentos", href: "/cliente/agendamento", icon: "◷" },
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:33: { label: "VemGO Pay", href: "/cliente/recurso-indisponivel/vemgo-pay", icon: "$" },
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:34: { label: "Clube VemGO+", href: "/cliente/recurso-indisponivel/clube-vemgo", icon: "✦" },
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:43: { label: "Agendamentos", href: "/profissional/agendamento", icon: "◷" },
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:50: { label: "VemGO Pay", href: "/profissional/recurso-indisponivel/vemgo-pay", icon: "$" },
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:51: { label: "Planos VemGO", href: "/profissional/recurso-indisponivel/planos", icon: "▦" },
+C:\VemGO\vemgo\lib\client-appointment-status.ts:1: export type ClientAppointment = {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:9: export type ClientAppointmentActions = {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:28: export function getClientAppointmentActions(
+C:\VemGO\vemgo\lib\client-appointment-status.ts:29: appointment: ClientAppointment | null | undefined,
+C:\VemGO\vemgo\lib\client-appointment-status.ts:32: ): ClientAppointmentActions {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:34: if (!appointment || appointment.client_outcome) return denied;
+C:\VemGO\vemgo\lib\client-appointment-status.ts:37: const startsAt = Date.parse(appointment.starts_at);
+C:\VemGO\vemgo\lib\client-appointment-status.ts:38: const endsAt = Date.parse(appointment.ends_at);
+C:\VemGO\vemgo\lib\client-appointment-status.ts:44: (appointment.status === "scheduled" || appointment.status === "confirmed") &&
+C:\VemGO\vemgo\lib\client-appointment-status.ts:48: appointment.status === "confirmed" &&
+C:\VemGO\vemgo\lib\client-appointment-status.ts:52: ["confirmed", "in_progress", "completed"].includes(appointment.status) &&
+C:\VemGO\vemgo\lib\client-appointment-status.ts:59: export type ClientAppointmentState =
+C:\VemGO\vemgo\lib\client-appointment-status.ts:73: * Derives a presentation state only. It never updates an order or appointment.
+C:\VemGO\vemgo\lib\client-appointment-status.ts:76: export function getClientAppointmentState(
+C:\VemGO\vemgo\lib\client-appointment-status.ts:77: appointment: ClientAppointment | null | undefined,
+C:\VemGO\vemgo\lib\client-appointment-status.ts:80: ): ClientAppointmentState {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:81: if (appointment?.client_outcome === "cancelled_by_client") return "cancelled";
+C:\VemGO\vemgo\lib\client-appointment-status.ts:82: if (appointment?.client_outcome === "no_show_reported") return "no_show";
+C:\VemGO\vemgo\lib\client-appointment-status.ts:83: if (appointment?.client_outcome === "problem_reported") return "disputed";
+C:\VemGO\vemgo\lib\client-appointment-status.ts:84: if (appointment?.client_outcome === "satisfied") return "completed";
+C:\VemGO\vemgo\lib\client-appointment-status.ts:86: if (appointment?.status === "cancelled") {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:87: return appointment.cancellation_reason
+C:\VemGO\vemgo\lib\client-appointment-status.ts:93: if (appointment?.status === "rejected") return "rejected";
+C:\VemGO\vemgo\lib\client-appointment-status.ts:94: if (orderStatus === "completed" || appointment?.status === "completed") {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:97: if (appointment?.status === "no_show") return "no_show";
+C:\VemGO\vemgo\lib\client-appointment-status.ts:98: if (orderStatus === "in_progress" || appointment?.status === "in_progress") {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:102: if (appointment?.status !== "scheduled" && appointment?.status !== "confirmed") {
+C:\VemGO\vemgo\lib\client-appointment-status.ts:106: const startsAt = Date.parse(appointment.starts_at);
+C:\VemGO\vemgo\lib\client-appointment-status.ts:107: const endsAt = Date.parse(appointment.ends_at);
+C:\VemGO\vemgo\lib\client-appointment-status.ts:115: return appointment.status;
+C:\VemGO\vemgo\lib\client-appointment-status.ts:122: return appointment.status;
+C:\VemGO\vemgo\lib\professional-onboarding.ts:10: PLAN: 9,
+C:\VemGO\vemgo\lib\professional-onboarding.ts:27: 9: "/cadastro-profissional/plano",

@@ -1,0 +1,295 @@
+﻿C:\VemGO\vemgo\app\page.tsx:210: <Link href="/" aria-label="VemGO - Início" className="shrink-0">
+C:\VemGO\vemgo\app\page.tsx:225: <Link href="/" className="text-white transition hover:text-zinc-300">
+C:\VemGO\vemgo\app\page.tsx:229: <a href="#sobre" className="text-zinc-400 transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:234: href="#como-funciona"
+C:\VemGO\vemgo\app\page.tsx:240: <a href="#servicos" className="text-zinc-400 transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:245: href="/privacidade"
+C:\VemGO\vemgo\app\page.tsx:251: <Link href="/termos" className="text-zinc-400 transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:259: onClick={() => router.push("/login")}
+C:\VemGO\vemgo\app\page.tsx:267: onClick={() => router.push("/cadastro")}
+C:\VemGO\vemgo\app\page.tsx:425: onClick={() => router.push("/cadastro")}
+C:\VemGO\vemgo\app\page.tsx:433: onClick={() => router.push("/login")}
+C:\VemGO\vemgo\app\page.tsx:633: href="/cadastro"
+C:\VemGO\vemgo\app\page.tsx:639: href="/login"
+C:\VemGO\vemgo\app\page.tsx:672: href="/cadastro-profissional"
+C:\VemGO\vemgo\app\page.tsx:678: href="/login"
+C:\VemGO\vemgo\app\page.tsx:718: <Link href="/" aria-label="VemGO - Início">
+C:\VemGO\vemgo\app\page.tsx:737: <Link href="/" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:740: <a href="#sobre" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:744: href="#como-funciona"
+C:\VemGO\vemgo\app\page.tsx:749: <a href="#servicos" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:758: <Link href="/login" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:761: <Link href="/cadastro" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:764: <Link href="/cadastro" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:768: href="/cadastro-profissional"
+C:\VemGO\vemgo\app\page.tsx:780: href="/privacidade"
+C:\VemGO\vemgo\app\page.tsx:785: <Link href="/termos" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:788: <Link href="/termos" className="transition hover:text-white">
+C:\VemGO\vemgo\app\page.tsx:792: href="/termos-profissional"
+C:\VemGO\vemgo\app\admin\login\page.tsx:59: router.replace("/controle");
+C:\VemGO\vemgo\app\admin\login\page.tsx:159: href="/"
+C:\VemGO\vemgo\app\cadastro\page.tsx:78: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro\page.tsx:88: router.push("/cadastro-profissional");
+C:\VemGO\vemgo\app\cadastro\page.tsx:111: <Link href="/" aria-label="VemGO - Início" className="inline-flex rounded-lg bg-black p-3">
+C:\VemGO\vemgo\app\cadastro\page.tsx:168: <Link href="/" aria-label="VemGO - Início" className="inline-flex rounded-lg bg-black p-2">
+C:\VemGO\vemgo\app\cadastro\page.tsx:315: href="/termos"
+C:\VemGO\vemgo\app\cadastro\page.tsx:323: href="/privacidade"
+C:\VemGO\vemgo\app\cadastro\page.tsx:378: href="/login"
+C:\VemGO\vemgo\app\cadastro-profissional\page.tsx:169: router.replace("/cadastro-profissional/endereco");
+C:\VemGO\vemgo\app\cadastro-profissional\page.tsx:252: href="/cadastro"
+C:\VemGO\vemgo\app\cadastro-profissional\page.tsx:410: href="/termos-profissional"
+C:\VemGO\vemgo\app\cadastro-profissional\page.tsx:419: href="/privacidade"
+C:\VemGO\vemgo\app\cadastro-profissional\page.tsx:452: href="/login?role=professional"
+C:\VemGO\vemgo\app\cadastro-profissional\page.tsx:472: href="/login?role=professional"
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:61: router.replace("/login?role=professional");
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:177: router.replace("/login?role=professional");
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:252: router.push(getProfessionalOnboardingRoute(nextStep));
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:479: router.push(
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:59: router.replace(
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:183: router.replace(
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:216: router.push("/cadastro-profissional/precos");
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:425: router.push("/cadastro-profissional/identidade")
+C:\VemGO\vemgo\app\cadastro-profissional\disponibilidade\page.tsx:56: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro-profissional\disponibilidade\page.tsx:178: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro-profissional\disponibilidade\page.tsx:250: router.push("/cadastro-profissional/area-atendimento");
+C:\VemGO\vemgo\app\cadastro-profissional\disponibilidade\page.tsx:453: router.push("/cadastro-profissional/precos")
+C:\VemGO\vemgo\app\cadastro-profissional\endereco\page.tsx:64: router.replace("/login?role=professional");
+C:\VemGO\vemgo\app\cadastro-profissional\endereco\page.tsx:298: router.replace(getProfessionalOnboardingRoute(nextStep));
+C:\VemGO\vemgo\app\cadastro-profissional\foto\page.tsx:44: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro-profissional\foto\page.tsx:209: router.push("/cadastro-profissional/identidade");
+C:\VemGO\vemgo\app\cadastro-profissional\foto\page.tsx:222: router.push("/cadastro-profissional/identidade");
+C:\VemGO\vemgo\app\cadastro-profissional\identidade\page.tsx:75: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro-profissional\identidade\page.tsx:339: router.push("/cadastro-profissional/competencias");
+C:\VemGO\vemgo\app\cadastro-profissional\identidade\page.tsx:372: router.push("/cadastro-profissional/competencias");
+C:\VemGO\vemgo\app\cadastro-profissional\plano\page.tsx:32: router.replace("/login?role=professional");
+C:\VemGO\vemgo\app\cadastro-profissional\plano\page.tsx:63: router.replace("/profissional");
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:58: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:75: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:246: router.replace("/login");
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:320: router.push("/cadastro-profissional/disponibilidade");
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:407: router.push("/cadastro-profissional/competencias")
+C:\VemGO\vemgo\app\cadastro-profissional\precos\page.tsx:511: router.push("/cadastro-profissional/competencias")
+C:\VemGO\vemgo\app\cliente\page.tsx:383: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\page.tsx:427: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\page.tsx:585: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\page.tsx:598: router.push(route);
+C:\VemGO\vemgo\app\cliente\page.tsx:814: router.push("/cliente/verificacao");
+C:\VemGO\vemgo\app\cliente\page.tsx:852: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\page.tsx:866: router.push("/cliente/verificacao");
+C:\VemGO\vemgo\app\cliente\page.tsx:1002: router.push(`/cliente/agendamento/${request.id}`);
+C:\VemGO\vemgo\app\cliente\page.tsx:1950: onClick={() => router.push("/privacidade")}
+C:\VemGO\vemgo\app\cliente\page.tsx:1964: onClick={() => router.push("/termos")}
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:105: router.replace(`/login?redirect=/cliente/agendamento?orderId=${orderId}`);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:252: router.push(`/cliente/agendamento/${order.id}`);
+C:\VemGO\vemgo\app\cliente\agendamento\page.tsx:271: <button type="button" onClick={() => router.push("/cliente/servicos")} className="rounded-lg text-sm font-semibold text-zinc-400 transition hover:text-green-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:243: router.replace(`/login?redirect=/cliente/agendamento/${recordId}`);
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:575: href="/cliente/servicos"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:653: href="/cliente/servicos"
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:740: href={`/cliente/agendamento?orderId=${order.id}`}
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:793: href={`/cliente/agendamento?orderId=${order.id}`}
+C:\VemGO\vemgo\app\cliente\agendamento\[orderId]\page.tsx:815: <Link href="/cliente/servicos" className="mt-5 inline-flex rounded-xl border border-emerald-700/70 px-4 py-2.5 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">Voltar para meus serviços</Link>
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:45: router.replace("/login?redirect=/cliente/enderecos");
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:81: router.replace("/login?redirect=/cliente/enderecos");
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:144: router.replace("/login?redirect=/cliente/enderecos");
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:188: onClick={() => router.push("/cliente")}
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:215: onClick={() => router.push("/cliente/enderecos/novo")}
+C:\VemGO\vemgo\app\cliente\enderecos\page.tsx:323: router.push(
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:62: router.replace("/login?redirect=/cliente/enderecos/novo");
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:244: router.replace("/login?redirect=/cliente/enderecos/novo");
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:296: router.push("/cliente/enderecos");
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:317: href="/cliente/enderecos"
+C:\VemGO\vemgo\app\cliente\enderecos\novo\page.tsx:504: router.push("/cliente/enderecos")
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:42: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:58: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:102: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:192: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:250: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:285: <button type="button" onClick={() => router.push(isProfessional ? "/profissional" : "/cliente")} className="rounded-xl border border-zinc-700 px-4 py-2 text-sm transition hover:border-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400">Voltar ao painel</button>
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:353: {!isProfessional && <button type="button" onClick={() => router.push("/cliente/verificacao/identidade")} className="mt-4 rounded-xl border border-green-500/40 px-4 py-2 text-sm text-green-300 transition hover:bg-green-500/10">Consultar verificação de identidade</button>}
+C:\VemGO\vemgo\app\cliente\perfil\page.tsx:354: {isProfessional && <button type="button" onClick={() => router.push("/cadastro-profissional/identidade")} className="mt-4 rounded-xl border border-green-500/40 px-4 py-2 text-sm text-green-300 transition hover:bg-green-500/10">Consultar verificação de identidade</button>}
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:312: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:329: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:517: onClick={() => router.push("/cliente")}
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:546: onClick={() => router.push("/cliente")}
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:681: onClick={() => router.push("/cliente")}
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:703: <button type="button" onClick={() => router.push(`/cliente/agendamento/${request.id}`)} className="w-full rounded-xl border border-green-500/50 px-5 py-3 text-sm font-semibold text-green-400 transition hover:bg-green-500 hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400">Acompanhar →</button>
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:792: router.push(
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:804: router.push(
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:816: router.push(
+C:\VemGO\vemgo\app\cliente\servicos\page.tsx:828: router.push(
+C:\VemGO\vemgo\app\cliente\verificacao\page.tsx:46: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\verificacao\page.tsx:68: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\verificacao\page.tsx:267: onClick={() => router.push("/cliente")}
+C:\VemGO\vemgo\app\cliente\verificacao\page.tsx:459: router.push("/cliente/verificacao/identidade")
+C:\VemGO\vemgo\app\cliente\verificacao\page.tsx:543: onClick={() => router.push("/cliente")}
+C:\VemGO\vemgo\app\cliente\verificacao\identidade\page.tsx:72: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\verificacao\identidade\page.tsx:95: router.replace("/login");
+C:\VemGO\vemgo\app\cliente\verificacao\identidade\page.tsx:429: <button type="button" onClick={() => router.push("/cliente/verificacao")} className="rounded-lg text-sm font-semibold text-zinc-400 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
+C:\VemGO\vemgo\app\cliente\verificacao\identidade\page.tsx:454: router.push(
+C:\VemGO\vemgo\app\cliente\verificacao\identidade\page.tsx:492: router.push(
+C:\VemGO\vemgo\app\cliente\verificacao\identidade\page.tsx:509: <button type="button" onClick={() => router.push("/cliente/verificacao")} className="mb-6 rounded-lg text-sm font-semibold text-zinc-400 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
+C:\VemGO\vemgo\app\controle\page.tsx:292: router.replace("/login");
+C:\VemGO\vemgo\app\controle\page.tsx:364: router.replace("/login");
+C:\VemGO\vemgo\app\controle\page.tsx:1316: router.replace("/login");
+C:\VemGO\vemgo\app\controle\page.tsx:1423: <button key={item.label} type="button" disabled={item.action === "soon"} title={item.action === "soon" ? "Módulo ainda não implementado" : item.label} onClick={() => { if (item.action === "home") { router.push("/controle"); adminMenuInteractions.clearFocus(); setAdminMenuOpen(false); setAdminSearch(""); } else if (item.action === "professionals") { setActiveTab("professionals"); document.getElementById("admin-approvals")?.scrollIntoView({ behavior: "smooth", block: "start" }); adminMenuInteractions.clearFocus(); setAdminMenuOpen(false); setAdminSearch(""); } }} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition motion-reduce:transition-none ${item.active ? "bg-gradient-to-r from-blue-600 to-sky-500 font-semibold text-white shadow-lg shadow-blue-950/30" : item.action === "soon" ? "cursor-not-allowed text-zinc-500/80" : "text-zinc-200 hover:bg-blue-500/10 hover:text-blue-300"}`}>
+C:\VemGO\vemgo\app\controle\page.tsx:2144: href={selected.frontUrl}
+C:\VemGO\vemgo\app\controle\page.tsx:2256: href={selected.backUrl}
+C:\VemGO\vemgo\app\controle\page.tsx:2368: href={selected.selfieUrl}
+C:\VemGO\vemgo\app\controle\profissionais\page.tsx:144: router.replace("/login");
+C:\VemGO\vemgo\app\controle\profissionais\page.tsx:164: router.replace("/login");
+C:\VemGO\vemgo\app\controle\profissionais\page.tsx:268: router.replace("/login");
+C:\VemGO\vemgo\app\identidade\page.tsx:98: router.replace("/login?redirect=/identidade");
+C:\VemGO\vemgo\app\identidade\page.tsx:168: href="/"
+C:\VemGO\vemgo\app\identidade\page.tsx:268: href="/cadastro-profissional/identidade"
+C:\VemGO\vemgo\app\identidade\page.tsx:345: <Link href="/" className="sm:flex-1">
+C:\VemGO\vemgo\app\identidade\page.tsx:357: href="/cadastro-profissional/identidade"
+C:\VemGO\vemgo\app\login\page.tsx:325: router.replace(destination);
+C:\VemGO\vemgo\app\login\page.tsx:354: router.replace("/cliente");
+C:\VemGO\vemgo\app\login\page.tsx:521: href="/recuperar-senha"
+C:\VemGO\vemgo\app\login\page.tsx:539: router.push(
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:41: router.replace("/login");
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:57: router.replace("/login");
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:91: router.replace("/login");
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:181: router.replace("/login");
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:239: router.replace("/login");
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:278: <button type="button" onClick={() => router.push(isProfessional ? "/profissional" : "/cliente")} className="rounded-xl border border-zinc-700 px-4 py-2 text-sm hover:border-[var(--portal-accent)]">Voltar ao painel</button>
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:336: {!isProfessional && <button type="button" onClick={() => router.push("/cliente/enderecos")} className="mt-4 rounded-xl border border-zinc-700 px-4 py-2 text-sm hover:border-[var(--portal-accent)]">Gerenciar meus endereços</button>}
+C:\VemGO\vemgo\app\meu-perfil\page.tsx:337: {isProfessional && <button type="button" onClick={() => router.push("/profissional")} className="mt-4 rounded-xl border border-zinc-700 px-4 py-2 text-sm hover:border-orange-500">Voltar à área profissional</button>}
+C:\VemGO\vemgo\app\privacidade\page.tsx:9: href="/"
+C:\VemGO\vemgo\app\privacidade\page.tsx:222: href="/termos"
+C:\VemGO\vemgo\app\profissional\page.tsx:153: router.replace("/login?role=professional");
+C:\VemGO\vemgo\app\profissional\page.tsx:194: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\page.tsx:199: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\page.tsx:204: router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\page.tsx:216: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\page.tsx:224: router.replace(getProfessionalOnboardingRoute(onboardingStep));
+C:\VemGO\vemgo\app\profissional\page.tsx:450: router.replace("/login?role=professional");
+C:\VemGO\vemgo\app\profissional\page.tsx:529: <button type="button" onClick={() => router.push("/profissional/regioes")} title="Gerenciar regiões atendidas" className="ml-1 hidden shrink-0 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-left transition hover:border-orange-400/40 sm:flex">
+C:\VemGO\vemgo\app\profissional\page.tsx:537: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/vemgo-pay")} aria-label="Abrir informações do VemGO Pay" title="VemGO Pay" className="hidden shrink-0 items-center gap-2 rounded-xl border border-orange-500/25 bg-orange-500/[0.07] px-3 py-2 text-left transition hover:border-orange-400/50 sm:flex">
+C:\VemGO\vemgo\app\profissional\page.tsx:546: {notificationsOpen && <div className="absolute right-0 top-12 z-[70] w-[min(300px,calc(100vw-32px))] rounded-2xl border border-white/10 bg-[#111512] p-4 shadow-2xl"><div className="flex items-center justify-between"><h3 className="font-semibold">Notificações</h3><button type="button" onClick={() => setNotificationsOpen(false)} aria-label="Fechar notificações" className="text-zinc-500 hover:text-white">×</button></div><p className="mt-3 text-sm leading-6 text-zinc-400">{opportunityCount > 0 ? `Você tem ${opportunityCount} oportunidade(s) compatíveis.` : "Suas atualizações aparecerão aqui quando houver novidades."}</p><button type="button" onClick={() => { setNotificationsOpen(false); router.push("/profissional/oportunidades"); }} className="mt-3 text-sm font-semibold text-orange-400 hover:text-orange-300">Ver oportunidades →</button></div>}
+C:\VemGO\vemgo\app\profissional\page.tsx:548: <button type="button" onClick={() => router.push("/profissional/perfil")} className="flex shrink-0 items-center gap-2 rounded-xl py-1 pl-1 text-left transition hover:bg-white/[0.035] sm:gap-3 sm:pl-2 sm:pr-2">
+C:\VemGO\vemgo\app\profissional\page.tsx:552: <button type="button" onClick={async () => { const supabase = createSupabaseBrowserClient(); await supabase.auth.signOut(); router.replace("/login?role=professional"); }} aria-label="Sair da conta" title="Sair" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-zinc-400 transition hover:bg-red-500/10 hover:text-red-300">
+C:\VemGO\vemgo\app\profissional\page.tsx:585: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="inline-flex items-center justify-center gap-3 rounded-xl bg-orange-500 px-5 py-3 font-bold text-black shadow-lg shadow-orange-950/30 transition hover:bg-orange-400">
+C:\VemGO\vemgo\app\profissional\page.tsx:588: <button type="button" onClick={() => router.push("/profissional/oportunidades")} disabled={!canManageAvailability} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-5 py-3 font-semibold text-white transition hover:border-orange-400/50 disabled:cursor-not-allowed disabled:opacity-50">
+C:\VemGO\vemgo\app\profissional\page.tsx:629: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/planos")} className="mt-3 inline-flex shrink-0 items-center gap-2 text-sm font-bold text-orange-400 hover:text-orange-300 sm:mt-0">Conhecer planos →</button>
+C:\VemGO\vemgo\app\profissional\page.tsx:658: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/planos")} className={`mt-6 inline-flex items-center gap-2 rounded-xl border ${selected.border} bg-white/[0.03] px-5 py-3 text-sm font-bold ${selected.accent} transition hover:bg-white/[0.07]`}>Conhecer plano {selected.name} <span aria-hidden="true">→</span></button>
+C:\VemGO\vemgo\app\profissional\page.tsx:695: <button type="button" onClick={() => router.push("/profissional/oportunidades")} disabled={!canManageAvailability} className="group rounded-2xl border border-white/10 bg-[#111111] p-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40 disabled:cursor-not-allowed disabled:opacity-50">
+C:\VemGO\vemgo\app\profissional\page.tsx:701: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="group rounded-2xl border border-white/10 bg-[#111111] p-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40">
+C:\VemGO\vemgo\app\profissional\page.tsx:707: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="group rounded-2xl border border-white/10 bg-[#111111] p-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40">
+C:\VemGO\vemgo\app\profissional\page.tsx:713: <button type="button" onClick={() => router.push("/profissional/precos")} className="group rounded-2xl border border-white/10 bg-[#111111] p-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40">
+C:\VemGO\vemgo\app\profissional\page.tsx:729: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="shrink-0 text-sm font-semibold text-orange-400 hover:text-orange-300">Ver todos →</button>
+C:\VemGO\vemgo\app\profissional\page.tsx:736: <button type="button" onClick={() => router.push("/profissional/oportunidades")} disabled={!canManageAvailability} className="mt-5 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-bold text-black transition hover:bg-orange-400 disabled:opacity-50">Ver oportunidades</button>
+C:\VemGO\vemgo\app\profissional\page.tsx:744: <button key={appointment.id} type="button" onClick={() => router.push(`/profissional/agendamento/${appointment.order_id}`)} className="w-full rounded-2xl border border-white/10 bg-[#111111] p-4 text-left transition hover:border-orange-400/40 sm:p-5">
+C:\VemGO\vemgo\app\profissional\page.tsx:771: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/ajuda")} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-3 text-sm font-bold text-black transition hover:bg-orange-400">Solicitar ajuda <span aria-hidden="true">→</span></button>
+C:\VemGO\vemgo\app\profissional\page.tsx:780: <button type="button" onClick={() => router.push("/profissional/recurso-indisponivel/vemgo-pay")} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-orange-400/30 px-5 py-3 text-sm font-bold text-orange-300 transition hover:bg-orange-400/10">Ver informações do VemGO Pay →</button>
+C:\VemGO\vemgo\app\profissional\page.tsx:786: <button type="button" onClick={() => router.push("/privacidade")} className="transition hover:text-zinc-300">Privacidade</button>
+C:\VemGO\vemgo\app\profissional\page.tsx:787: <button type="button" onClick={() => router.push("/termos-profissional")} className="transition hover:text-zinc-300">Termos do profissional</button>
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:275: router.push(
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:508: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:552: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:804: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:894: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\agendamento\page.tsx:952: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:239: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:261: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:271: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:279: router.replace(
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:475: window.setTimeout(() => router.push("/profissional/agendamento"), 1200);
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:506: onClick={() => router.push("/profissional/agendamento")}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:542: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="flex items-center" aria-label="Voltar para agendamentos">
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:552: onClick={() => router.push("/profissional/agendamento")}
+C:\VemGO\vemgo\app\profissional\agendamento\[orderId]\page.tsx:626: <button type="button" onClick={() => router.push("/profissional/agendamento")} className="mt-6 rounded-xl bg-orange-500 px-6 py-4 font-semibold text-black hover:bg-orange-400">
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:89: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:121: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:129: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:137: router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:145: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:357: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:385: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:461: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:495: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\disponibilidade\page.tsx:602: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:46: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:59: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:65: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:71: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:73: router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:75: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:134: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:172: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:226: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\oportunidades\page.tsx:319: router.push(
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:145: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:177: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:189: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:201: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:205: router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:209: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:213: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:346: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:434: router.push("/profissional/oportunidades");
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:516: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:578: router.push("/profissional/oportunidades")
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:842: router.push(
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:868: router.push("/profissional")
+C:\VemGO\vemgo\app\profissional\oportunidades\[id]\page.tsx:912: router.push(
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:41: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:57: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:91: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:181: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:239: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:271: <button type="button" onClick={() => router.push(isProfessional ? "/profissional" : "/cliente")} className="rounded-xl border border-zinc-700 px-4 py-2 text-sm hover:border-orange-500">Voltar ao painel</button>
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:329: {!isProfessional && <button type="button" onClick={() => router.push("/cliente/enderecos")} className="mt-4 rounded-xl border border-zinc-700 px-4 py-2 text-sm hover:border-orange-500">Gerenciar meus endereços</button>}
+C:\VemGO\vemgo\app\profissional\perfil\page.tsx:330: {isProfessional && <button type="button" onClick={() => router.push("/profissional")} className="mt-4 rounded-xl border border-zinc-700 px-4 py-2 text-sm hover:border-orange-500">Voltar à área profissional</button>}
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:69: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:89: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:99: if (!cancelled) router.replace("/login");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:107: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:115: router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:123: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:363: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:383: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:449: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:483: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:584: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\precos\page.tsx:648: onClick={() => router.push("/profissional/servicos")}
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:45: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:58: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:64: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:69: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:74: router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:79: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:215: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:230: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:279: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:298: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:355: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:79: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:99: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:109: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:117: router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:125: router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:133: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:189: router.replace("/cadastro-profissional/competencias");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:329: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:349: if (profile?.user_type === "client") router.replace("/cliente");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:351: else if (profile?.user_type === "admin") router.replace("/controle");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:353: else router.replace("/login");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:417: router.replace("/login");
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:495: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:598: onClick={() => router.push("/profissional")}
+C:\VemGO\vemgo\app\recuperar-senha\page.tsx:63: <Link href="/" className="inline-block">
+C:\VemGO\vemgo\app\recuperar-senha\page.tsx:118: <Link href="/login" className="block">
+C:\VemGO\vemgo\app\recuperar-senha\page.tsx:158: href="/login"
+C:\VemGO\vemgo\app\redefinir-senha\page.tsx:91: router.replace("/login");
+C:\VemGO\vemgo\app\redefinir-senha\page.tsx:121: <Link href="/" aria-label="VemGO - Início" className="inline-flex rounded-lg bg-black p-2">
+C:\VemGO\vemgo\app\termos\page.tsx:9: href="/"
+C:\VemGO\vemgo\app\termos\page.tsx:201: href="/privacidade"
+C:\VemGO\vemgo\app\termos-profissional\page.tsx:243: href="/termos"
+C:\VemGO\vemgo\app\termos-profissional\page.tsx:250: href="/privacidade"
+C:\VemGO\vemgo\components\ui\PageState.tsx:44: href={action.href}
+C:\VemGO\vemgo\components\vemgo\FeatureUnavailable.tsx:90: href={homeHref}
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:101: href={role === "admin" ? "/controle" : `/${role === "client" ? "cliente" : "profissional"}`}
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:177: href={link.href}
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:226: router.replace(settings.signOutTarget);
+C:\VemGO\vemgo\components\vemgo\PortalLayout.tsx:237: href="#portal-content-main"

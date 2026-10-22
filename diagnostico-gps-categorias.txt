@@ -1,0 +1,66 @@
+﻿C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:19: max_distance_km: number;
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:23: const DEFAULT_DISTANCE = 20;
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:34: max_distance_km: DEFAULT_DISTANCE,
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:67: .select("id, city, state, country, max_distance_km, is_active")
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:89: max_distance_km:
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:90: Number(data.max_distance_km) || DEFAULT_DISTANCE,
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:136: const distance = Number(region.max_distance_km);
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:153: if (!Number.isFinite(distance) || distance <= 0) {
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:154: setError("Informe uma distância de atendimento válida.");
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:158: if (distance > 500) {
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:159: setError("A distância máxima permitida é de 500 km.");
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:219: max_distance_km: distance,
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:318: Informe sua cidade principal e a distância máxima que aceita
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:427: htmlFor="distance"
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:430: Distância máxima de atendimento
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:434: {region.max_distance_km} km
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:439: id="distance"
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:440: name="distance"
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:445: value={region.max_distance_km}
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:448: "max_distance_km",
+C:\VemGO\vemgo\app\cadastro-profissional\area-atendimento\page.tsx:467: A distância informada será utilizada como referência
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:31: const [categories, setCategories] = useState<Category[]>([]);
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:66: categoriesResult,
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:71: .from("categories")
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:93: if (categoriesResult.error || servicesResult.error) {
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:103: setCategories(categoriesResult.data ?? []);
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:285: Categorias
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:298: Todas as categorias
+C:\VemGO\vemgo\app\cadastro-profissional\competencias\page.tsx:301: {categories.map((category) => (
+C:\VemGO\vemgo\app\cliente\page.tsx:61: const categories = [
+C:\VemGO\vemgo\app\cliente\page.tsx:316: const categoriesTrackRef = useRef<HTMLDivElement>(null);
+C:\VemGO\vemgo\app\cliente\page.tsx:1617: {/* CATEGORIAS */}
+C:\VemGO\vemgo\app\cliente\page.tsx:1633: Categorias de serviços
+C:\VemGO\vemgo\app\cliente\page.tsx:1644: <button type="button" aria-label="Rolar categorias para a esquerda" onClick={() => categoriesTrackRef.current?.scrollBy({ left: -360, behavior: "smooth" })} className="absolute -left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/65 text-white/70 opacity-0 shadow-lg backdrop-blur transition hover:bg-emerald-400 hover:text-black group-hover/category:opacity-100 focus:opacity-100"><span aria-hidden="true" className="text-2xl leading-none">‹</span></button>
+C:\VemGO\vemgo\app\cliente\page.tsx:1645: <div ref={categoriesTrackRef} className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+C:\VemGO\vemgo\app\cliente\page.tsx:1646: {categories.map((category) => (
+C:\VemGO\vemgo\app\cliente\page.tsx:1652: <button type="button" aria-label="Rolar categorias para a direita" onClick={() => categoriesTrackRef.current?.scrollBy({ left: 360, behavior: "smooth" })} className="absolute -right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/65 text-white/70 opacity-0 shadow-lg backdrop-blur transition hover:bg-emerald-400 hover:text-black group-hover/category:opacity-100 focus:opacity-100"><span aria-hidden="true" className="text-2xl leading-none">›</span></button>
+C:\VemGO\vemgo\app\controle\page.tsx:118: regions: Array<{ city: string | null; state: string | null; country: string | null; max_distance_km: number | null; is_active: boolean | null }>;
+C:\VemGO\vemgo\app\controle\page.tsx:2732: <section className="rounded-xl border border-zinc-800 p-4"><h3 className="font-semibold text-blue-300">4. Área de atendimento</h3>{professionalDossier.regions.length === 0 ? <p className="mt-3 text-sm text-zinc-500">Nenhuma região cadastrada.</p> : professionalDossier.regions.map((region, index) => <p key={`${region.city}-${index}`} className="mt-2 text-sm">{[region.city, region.state, region.country].filter(Boolean).join(" / ")} · Raio: {region.max_distance_km == null ? "Não informado" : `${region.max_distance_km} km`} · {region.is_active ? "Ativa" : "Inativa"}</p>)}</section>
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:13: max_distance_km: number;
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:26: const [maxDistance, setMaxDistance] = useState("20");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:111: .select("id, city, state, country, max_distance_km, is_active")
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:149: const numericDistance = Number(maxDistance.replace(",", "."));
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:161: if (!Number.isFinite(numericDistance) || numericDistance <= 0) {
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:162: setError("Informe uma distância válida maior que zero.");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:184: max_distance_km: numericDistance,
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:191: setMaxDistance("20");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:252: max_distance_km: region.max_distance_km,
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:259: .select("id, city, state, country, max_distance_km, is_active");
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:371: Informe as cidades onde você atende e a distância máxima que aceita
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:435: htmlFor="region-distance"
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:438: Distância máxima
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:442: id="region-distance"
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:445: value={maxDistance}
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:446: onChange={(event) => setMaxDistance(event.target.value)}
+C:\VemGO\vemgo\app\profissional\regioes\page.tsx:488: Atendimento em até {region.max_distance_km} km
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:45: const [categories, setCategories] = useState<Category[]>([]);
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:219: const { data: categoriesData, error: categoriesError } = await supabase
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:221: .from("categories")
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:233: if (categoriesError) {
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:235: setError(`Não foi possível carregar as categorias: ${categoriesError.message}`);
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:267: setCategories(categoriesData || []);
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:449: const category = categories.find((item) => item.id === service.category_id) || null;
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:463: }, [filteredServices, categories]);
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:672: <option value="all">Todas as categorias</option>
+C:\VemGO\vemgo\app\profissional\servicos\page.tsx:674: {categories.map((category) => (

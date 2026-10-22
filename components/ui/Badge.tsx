@@ -1,41 +1,43 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes } from "react";
 
 type BadgeVariant =
-  | "neutral"
+  | "default"
   | "success"
   | "warning"
   | "danger"
-  | "green"
-  | "orange"
-  | "blue";
+  | "info"
+  | "professional";
 
-interface BadgeProps {
-  children: ReactNode;
+type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;
-}
-
-const variants: Record<BadgeVariant, string> = {
-  neutral: "bg-white/5 text-text-secondary border-white/10",
-  success: "bg-success-soft text-success border-success/20",
-  warning: "bg-warning-soft text-warning border-warning/20",
-  danger: "bg-danger-soft text-danger border-danger/20",
-  green: "bg-vemgo-green-soft text-vemgo-green border-vemgo-green-border",
-  orange:
-    "bg-vemgo-orange-soft text-vemgo-orange border-vemgo-orange-border",
-  blue: "bg-vemgo-blue-soft text-vemgo-blue border-vemgo-blue-border",
 };
 
-export function Badge({
+const variants: Record<BadgeVariant, string> = {
+  default: "border-zinc-700 bg-zinc-800 text-zinc-300",
+  success: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
+  warning: "border-amber-500/30 bg-amber-500/10 text-amber-400",
+  danger: "border-red-500/30 bg-red-500/10 text-red-400",
+  info: "border-blue-500/30 bg-blue-500/10 text-blue-400",
+  professional: "border-orange-500/30 bg-orange-500/10 text-orange-400",
+};
+
+export default function Badge({
+  variant = "default",
+  className = "",
   children,
-  variant = "neutral",
+  ...props
 }: BadgeProps) {
   return (
     <span
       className={[
-        "inline-flex items-center rounded-full border",
-        "px-2.5 py-1 text-xs font-medium",
+        "inline-flex items-center rounded-full border px-2.5 py-1",
+        "text-xs font-semibold",
         variants[variant],
-      ].join(" ")}
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      {...props}
     >
       {children}
     </span>

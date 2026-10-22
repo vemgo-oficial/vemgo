@@ -1,28 +1,39 @@
 import type { HTMLAttributes } from "react";
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  interactive?: boolean;
-}
+type CardProps = HTMLAttributes<HTMLDivElement> & {
+  padding?: "none" | "sm" | "md" | "lg";
+  tone?: "client" | "professional" | "admin";
+};
 
-export function Card({
-  children,
-  interactive = false,
+const paddingClasses = {
+  none: "p-0",
+  sm: "p-4",
+  md: "p-5",
+  lg: "p-6",
+};
+
+export default function Card({
+  padding = "md",
+  tone,
   className = "",
+  children,
   ...props
 }: CardProps) {
   return (
     <div
-      {...props}
       className={[
-        "rounded-xl border border-white/10 bg-surface-1",
-        "shadow-sm",
-        interactive
-          ? "transition-colors duration-180 hover:border-white/20 hover:bg-surface-2"
-          : "",
+        "rounded-2xl border bg-zinc-900/70",
+        tone === "client" ? "border-emerald-500/30" : "",
+        tone === "professional" ? "border-orange-500/30" : "",
+        tone === "admin" ? "border-blue-500/30" : "",
+        !tone ? "border-zinc-800" : "",
+        "shadow-lg shadow-black/20",
+        paddingClasses[padding],
         className,
       ]
         .filter(Boolean)
         .join(" ")}
+      {...props}
     >
       {children}
     </div>

@@ -12,6 +12,8 @@ export const PROFESSIONAL_ONBOARDING_STEPS = {
 
 export const PROFESSIONAL_ONBOARDING_TOTAL_STEPS = 9;
 
+export const PROFESSIONAL_ONBOARDING_COMPLETED_STEP = 10;
+
 export function getProfessionalOnboardingRoute(step: number) {
   const routes: Record<number, string> = {
     1: "/cadastro-profissional",
@@ -25,7 +27,11 @@ export function getProfessionalOnboardingRoute(step: number) {
     9: "/cadastro-profissional/plano",
   };
 
-  return routes[step] ?? routes[2];
+  if (step >= PROFESSIONAL_ONBOARDING_COMPLETED_STEP) {
+    return "/profissional";
+  }
+
+  return routes[step] ?? routes[1];
 }
 
 export function getNextProfessionalOnboardingStep(
@@ -33,6 +39,6 @@ export function getNextProfessionalOnboardingStep(
 ) {
   return Math.min(
     currentStep + 1,
-    PROFESSIONAL_ONBOARDING_TOTAL_STEPS,
+    PROFESSIONAL_ONBOARDING_COMPLETED_STEP,
   );
 }
