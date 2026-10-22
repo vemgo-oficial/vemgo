@@ -1,4 +1,4 @@
-﻿"use client";
+﻿﻿"use client";
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -637,7 +637,16 @@ export default function ProfissionalPage() {
               {availabilityMessage && <p role="status" className="relative mt-5 rounded-xl border border-orange-500/20 bg-orange-500/5 px-4 py-3 text-sm text-orange-200">{availabilityMessage}</p>}
             </section>
 
-            <ProfessionalLiveLocation enabled={isAcceptingCalls} onStatusChange={setGpsStatus} />
+            {isAcceptingCalls ? (
+              <ProfessionalLiveLocation onStatusChange={setGpsStatus} />
+            ) : (
+              <div className="mt-8 rounded-2xl border border-white/10 bg-zinc-900/60 p-5 text-center">
+                <p className="text-sm text-zinc-400">
+                  Ative sua disponibilidade para ativar o rastreamento GPS e receber chamados próximos.
+                </p>
+                <p className="mt-2 text-xs text-zinc-500">GPS em espera — usando localização cadastrada</p>
+              </div>
+            )}
 
             <section ref={plansSectionRef} className={`mt-8 overflow-hidden rounded-3xl border border-white/10 bg-[#0e0e0e] p-6 sm:p-8 ${plansAnimationStarted ? "plans-visible" : "plans-not-yet-visible"}`}>
               <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
 import {
-  canClientCancelRequest,
   getClientAppointmentActions,
   getClientAppointmentState,
 } from "@/lib/client-appointment-status";
@@ -289,8 +288,7 @@ export default function ClienteAgendamentoPage() {
   const [address, setAddress] = useState<AddressInfo | null>(null);
   const [professional, setProfessional] = useState<ProfileInfo | null>(null);
   const [appointment, setAppointment] = useState<Appointment | null>(null);
-  const [appointmentLifecycleAvailable, setAppointmentLifecycleAvailable] =
-    useState(false);
+  const [appointmentLifecycleAvailable, setAppointmentLifecycleAvailable] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [now, setNow] = useState<number | null>(null);
@@ -733,4 +731,241 @@ export default function ClienteAgendamentoPage() {
                     href={mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-5 inline
+                    className="mt-5 inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-emerald-400 hover:text-emerald-300"
+                  >
+                    Abrir no Google Maps
+                  </a>
+                )}
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                  Profissional
+                </p>
+                {professional ? (
+                  <>
+                    <h2 className="mt-2 text-xl font-bold">
+                      {professional.full_name || "Profissional VemGO"}
+                    </h2>
+                    <p className="mt-2 text-sm text-zinc-400">
+                      Profissional designado para este atendimento
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="mt-2 text-xl font-bold text-zinc-300">
+                      Profissional ainda não definido
+                    </h2>
+                    <p className="mt-2 text-sm text-zinc-400">
+                      Assim que um profissional aceitar, os dados aparecerão aqui.
+                    </p>
+                  </>
+                )}
+                {appointment && (
+                  <div className="mt-5 space-y-2 border-t border-white/10 pt-4 text-sm">
+                    <p className="text-zinc-400">
+                      Início: <span className="text-zinc-200">{formatDateTime(appointment.starts_at)}</span> às <span className="text-zinc-200">{formatTime(appointment.starts_at)}</span>
+                    </p>
+                    <p className="text-zinc-400">
+                      Término: <span className="text-zinc-200">{formatDateTime(appointment.ends_at)}</span> às <span className="text-zinc-200">{formatTime(appointment.ends_at)}</span>
+                    </p>
+                    <p className="text-zinc-400">
+                      Status agendamento: <span className="text-zinc-200">{appointment.status}</span>
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {appointment && order && (
+              <div className="mt-8 rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
+                {!appointmentLifecycleAvailable && (
+                  <p className="mb-4 text-xs text-amber-300">
+                    Algumas ações avançadas estão indisponíveis neste ambiente.
+                  </p>
+                )}
+                <h3 className="text-lg font-bold">Ações do atendimento</h3>
+                <p className="mt-2 text-sm text-zinc-400">
+                  Você pode cancelar ou informar o resultado do atendimento conforme o andamento.
+                </p>
+
+                {clientActionMessage && (
+                  <div className="mt-4 rounded-xl border border-emerald-800 bg-emerald-950/30 p-4 text-sm text-emerald-300">
+                    {clientActionMessage}
+                  </div>
+                )}
+
+                {(() => {
+                  const appointmentActions = getClientAppointmentActions(appointment, order.status, now);
+                  const hasAnyAction = appointmentActions.cancel || appointmentActions.reportNoShow || appointmentActions.submitResult;
+                  return (
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      {appointmentActions.cancel && (
+                        <button
+                          key="cancel"
+                          type="button"
+                          disabled={clientActionBusy}
+                          onClick={() => setClientAction("cancel")}
+                          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-emerald-400 hover:text-emerald-300 disabled:opacity-50"
+                        >
+                          Cancelar atendimento
+                        </button>
+                      )}
+                      {appointmentActions.reportNoShow && (
+                        <button
+                          key="no_show"
+                          type="button"
+                          disabled={clientActionBusy}
+                          onClick={() => setClientAction("no_show")}
+                          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-emerald-400 hover:text-emerald-300 disabled:opacity-50"
+                        >
+                          Relatar não comparecimento
+                        </button>
+                      )}
+                      {appointmentActions.submitResult && (
+                        <>
+                          <button
+                            key="satisfied"
+                            type="button"
+                            disabled={clientActionBusy}
+                            onClick={() => setClientAction("satisfied")}
+                            className="rounded-xl border border-emerald-700/50 bg-emerald-950/30 px-4 py-2 text-sm font-semibold text-emerald-300 transition hover:border-emerald-400 disabled:opacity-50"
+                          >
+                            Confirmar atendimento realizado
+                          </button>
+                          <button
+                            key="problem"
+                            type="button"
+                            disabled={clientActionBusy}
+                            onClick={() => setClientAction("problem")}
+                            className="rounded-xl border border-amber-700/50 bg-amber-950/30 px-4 py-2 text-sm font-semibold text-amber-300 transition hover:border-amber-400 disabled:opacity-50"
+                          >
+                            Relatar problema
+                          </button>
+                        </>
+                      )}
+                      {!hasAnyAction && (
+                        <p className="text-sm text-zinc-500">Nenhuma ação disponível no momento.</p>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                {clientAction && (
+                  <div className="mt-6 rounded-2xl border border-white/10 bg-black/40 p-5">
+                    <h4 className="font-semibold text-white">
+                      {clientAction === "cancel" && "Cancelar atendimento"}
+                      {clientAction === "no_show" && "Não comparecimento"}
+                      {clientAction === "satisfied" && "Confirmar satisfação"}
+                      {clientAction === "problem" && "Descrever problema"}
+                    </h4>
+                    <textarea
+                      value={clientActionNote}
+                      onChange={(e) => setClientActionNote(e.target.value)}
+                      placeholder={
+                        clientAction === "cancel"
+                          ? "Motivo do cancelamento (opcional)"
+                          : clientAction === "problem"
+                            ? "Descreva o que aconteceu"
+                            : "Observação (opcional)"
+                      }
+                      className="mt-3 min-h-[90px] w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-emerald-400 focus:outline-none"
+                    />
+                    <div className="mt-4 flex gap-3">
+                      <button
+                        type="button"
+                        disabled={clientActionBusy}
+                        onClick={async () => {
+                          setClientActionBusy(true);
+                          setClientActionMessage("");
+                          try {
+                            const { data: userData } = await supabase.auth.getUser();
+                            if (!userData.user) throw new Error("Sessão expirada");
+
+                            if (clientAction === "cancel") {
+                              const { error: cancelError } = await supabase
+                                .from("appointments")
+                                .update({
+                                  status: "cancelled",
+                                  cancelled_at: new Date().toISOString(),
+                                  cancellation_reason: clientActionNote || "Cancelado pelo cliente",
+                                  client_outcome: "cancelled_by_client",
+                                  client_reported_at: new Date().toISOString(),
+                                })
+                                .eq("id", appointment.id);
+
+                              if (cancelError) throw cancelError;
+
+                              await supabase
+                                .from("orders")
+                                .update({ status: "cancelled" })
+                                .eq("id", order.id);
+                            } else if (clientAction === "satisfied") {
+                              await supabase
+                                .from("appointments")
+                                .update({
+                                  client_outcome: "satisfied",
+                                  client_outcome_note: clientActionNote,
+                                  client_reported_at: new Date().toISOString(),
+                                  status: "completed",
+                                })
+                                .eq("id", appointment.id);
+                            } else if (clientAction === "problem") {
+                              await supabase
+                                .from("appointments")
+                                .update({
+                                  client_outcome: "problem_reported",
+                                  client_outcome_note: clientActionNote,
+                                  client_reported_at: new Date().toISOString(),
+                                  status: "disputed",
+                                })
+                                .eq("id", appointment.id);
+                            } else if (clientAction === "no_show") {
+                              await supabase
+                                .from("appointments")
+                                .update({
+                                  client_outcome: "no_show_reported",
+                                  client_outcome_note: clientActionNote,
+                                  client_reported_at: new Date().toISOString(),
+                                  status: "no_show",
+                                })
+                                .eq("id", appointment.id);
+                            }
+
+                            setClientActionMessage("Atualização registrada com sucesso!");
+                            setClientAction(null);
+                            setClientActionNote("");
+                            await loadData(true);
+                          } catch (err: unknown) {
+                            const message = err instanceof Error ? err.message : "Erro ao registrar ação";
+                            setClientActionMessage(message);
+                          } finally {
+                            setClientActionBusy(false);
+                          }
+                        }}
+                        className="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-bold text-black transition hover:bg-emerald-400 disabled:opacity-50"
+                      >
+                        {clientActionBusy ? "Enviando..." : "Confirmar"}
+                      </button>
+                      <button
+                        type="button"
+                        disabled={clientActionBusy}
+                        onClick={() => {
+                          setClientAction(null);
+                          setClientActionNote("");
+                        }}
+                        className="rounded-xl border border-white/10 px-5 py-2.5 text-sm font-semibold text-zinc-300 hover:border-white/20 disabled:opacity-50"
+                      >
+                        Voltar
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </section>
+    </main>
+  );
+}

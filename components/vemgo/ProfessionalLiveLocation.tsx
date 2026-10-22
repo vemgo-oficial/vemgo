@@ -1,164 +1,75 @@
-
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
+import { useEffect, useState } from "react";
 
-type LocationStatus = "idle" | "tracking" | "error";
+type Props = {
+  onStatusChange?: (status: "idle" | "tracking" | "error") => void;
+};
 
-export default function ProfessionalLiveLocation() {
-  const [status, setStatus] = useState<LocationStatus>("idle");
-  const [message, setMessage] = useState(
-    "Sua localização só será compartilhada quando você ativar."
-  );
-  const watchId = useRef<number | null>(null);
-  const sending = useRef(false);
-  const active = useRef(false);
+export default function ProfessionalLiveLocation({ onStatusChange }: Props) {
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    return () => {
-      active.current = false;
-
-      if (watchId.current !== null && "geolocation" in navigator) {
-        navigator.geolocation.clearWatch(watchId.current);
-      }
-    };
-  }, []);
-
-  const sendPosition = useCallback(async (position: GeolocationPosition) => {
-    if (!active.current || sending.current) return;
-
-    sending.current = true;
-
-    try {
-      const supabase = createSupabaseBrowserClient();
-
-      const { error } = await supabase.rpc(
-        "set_professional_live_location",
-        {
-          p_latitude: position.coords.latitude,
-          p_longitude: position.coords.longitude,
-          p_accuracy_m: position.coords.accuracy,
-        }
-      );
-
-      if (error) throw error;
-
-      if (active.current) {
-        setStatus("tracking");
-        setMessage("GPS ativo. Sua posição está sendo atualizada.");
-      }
-    } catch {
-      if (active.current) {
-        setStatus("error");
-        setMessage(
-          "Não foi possível enviar sua localização. Confira sua sessão e tente novamente."
-        );
-      }
-    } finally {
-      sending.current = false;
-    }
-  }, []);
-
-  const startTracking = useCallback(() => {
-    if (!navigator.geolocation) {
-      setStatus("error");
-      setMessage("Este navegador não oferece suporte à geolocalização.");
-      return;
+    if (!("geolocation" in navigator)) {
+      const timer = setTimeout(() => {
+        setError("Geolocalização não disponível neste dispositivo");
+        onStatusChange?.("error");
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
-    active.current = true;
-    setStatus("idle");
-    setMessage("Aguardando permissão e sinal do GPS...");
+    onStatusChange?.("idle");
 
-    watchId.current = navigator.geolocation.watchPosition(
-      (position) => {
-        void sendPosition(position);
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        setCoords({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
+        onStatusChange?.("tracking");
       },
-      (error) => {
-        active.current = false;
-
-        if (watchId.current !== null) {
-          navigator.geolocation.clearWatch(watchId.current);
-          watchId.current = null;
-        }
-
-        setStatus("error");
-        setMessage(
-          error.code === error.PERMISSION_DENIED
-            ? "Permissão de localização negada. Autorize o GPS no navegador."
-            : "Não foi possível obter a localização. Verifique o GPS e tente novamente."
-        );
+      (err) => {
+        console.warn("[VemGO] GPS error:", err.message);
+        setError(err.message);
+        onStatusChange?.("error");
       },
       {
         enableHighAccuracy: true,
-        maximumAge: 5000,
+        maximumAge: 30000,
         timeout: 15000,
       }
     );
-  }, [sendPosition]);
 
-  const stopTracking = useCallback(() => {
-    active.current = false;
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+      onStatusChange?.("idle");
+    };
+  }, [onStatusChange]);
 
-    if (watchId.current !== null) {
-      navigator.geolocation.clearWatch(watchId.current);
-      watchId.current = null;
-    }
-
-    setStatus("idle");
-    setMessage("GPS desativado nesta página.");
-  }, []);
+  if (error) {
+    return (
+      <div className="mt-8 rounded-2xl border border-amber-700/50 bg-amber-950/20 p-5">
+        <p className="text-sm font-semibold text-amber-300">GPS indisponível</p>
+        <p className="mt-1 text-xs text-zinc-400">{error} — usando localização cadastrada</p>
+      </div>
+    );
+  }
 
   return (
-    <section className="rounded-2xl border border-white/10 bg-[#111512] p-5 text-white">
-      <div className="flex items-start gap-3">
-        <div className="rounded-xl bg-emerald-500/10 p-3 text-emerald-400">
-          <span aria-hidden="true">◎</span>
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <h2 className="font-semibold">Localização em tempo real</h2>
-          <p className="mt-2 text-sm leading-6 text-zinc-400">
-            Permita que a VemGO use sua posição atual para identificar
-            oportunidades próximas. Seu endereço residencial não é usado
-            como GPS atual.
-          </p>
-
-          <p
-            role="status"
-            className={`mt-3 text-sm ${
-              status === "error"
-                ? "text-red-400"
-                : status === "tracking"
-                  ? "text-emerald-400"
-                  : "text-zinc-300"
-            }`}
-          >
-            {message}
-          </p>
-
-          <div className="mt-4 flex flex-wrap gap-3">
-            {status !== "tracking" ? (
-              <button
-                type="button"
-                onClick={startTracking}
-                className="rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-black hover:bg-emerald-400"
-              >
-                Ativar GPS
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={stopTracking}
-                className="rounded-xl border border-white/15 px-4 py-2.5 text-sm font-semibold hover:bg-white/5"
-              >
-                Desativar GPS
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="mt-8 rounded-2xl border border-emerald-700/30 bg-emerald-950/20 p-5">
+      <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">Localização ao vivo</p>
+      <h3 className="mt-2 text-sm font-semibold text-white">
+        {coords ? "GPS ativo e rastreando" : "Buscando localização..."}
+      </h3>
+      {coords && (
+        <p className="mt-2 text-xs text-zinc-400">
+          Lat: {coords.lat.toFixed(6)} · Lng: {coords.lng.toFixed(6)}
+        </p>
+      )}
+      <p className="mt-2 text-xs text-zinc-500">
+        Sua localização é usada apenas para encontrar chamados próximos. Não é exibida para clientes.
+      </p>
+    </div>
   );
 }
